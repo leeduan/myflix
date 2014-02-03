@@ -2,8 +2,13 @@ require 'spec_helper'
 
 describe Video do
   it "saves itself" do
-    video = Video.new(title: 'The Simpsons', description: 'An American adult animated sitcom created by Matt Groening for the Fox Broadcasting Company.', small_cover_url: 'south_park', large_cover_url: 'monk_large', category_id: '1')
-    video.save
-    Video.last.title.should == 'The Simpsons'
+    video = Video.create(title: 'The Simpsons', description: 'A description')
+    expect(Video.first).to eq(video)
+  end
+
+  it "belongs to category" do
+    dramas = Category.create(name: 'dramas')
+    monk = Video.create(title: 'Monk', description: 'A great drama!', category: dramas)
+    expect(monk.category).to eq(dramas)
   end
 end
