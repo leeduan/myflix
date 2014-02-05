@@ -1,9 +1,10 @@
 class MyFormBuilder < ActionView::Helpers::FormBuilder
-  def label(method, text = nil, options = {}, &block)
+  def text_field(method, options = {})
     errors = object.errors[method.to_sym]
-    if errors
-      text += " <span class=\"error\">#{errors.first}</span>"
+    if errors.any?
+      "#{super} <div class=\"has-error\">#{errors.first}</div>".html_safe
+    else
+      super
     end
-    super(method, text.html_safe, options, &block)
   end
 end
