@@ -1,3 +1,5 @@
 class FrontController < ApplicationController
-  def index; end
+  def index
+    redirect_to home_path if logged_in?
+  end
 end
