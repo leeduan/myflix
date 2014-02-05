@@ -1,6 +1,10 @@
 class VideosController < ApplicationController
   before_action :set_video, only: [:show]
 
+  def index
+    @categories = Category.all
+  end
+
   def show; end
 
   def search
