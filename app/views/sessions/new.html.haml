@@ -1,7 +1,7 @@
 %section.sign_in.container
   .row
     .col-sm-10.col-sm-offset-1
-      = form_tag login_path do
+      = form_tag login_path, 'data-js-validate' => 'true' do
         %header
           %h1 Sign in
         %fieldset
@@ -9,15 +9,11 @@
             = label_tag :email, 'Email Address'
             .row
               .col-sm-4
-                / %input.form-control(type="email")
                 = text_field_tag :email, nil, class: 'form-control', type: 'email'
           .form-group
-            / %label Password
             = label_tag :password
             .row
               .col-sm-4
-                / %input.form-control(type="password")
                 = text_field_tag :password, nil, class: 'form-control', type: 'password'
         %fieldset.form-group.action
-          / %input(type="submit" value="Sign in" class="btn btn-default")
           = submit_tag 'Sign in', class: 'btn btn-default'
