@@ -10,4 +10,10 @@ class SessionsController < ApplicationController
       render :new
     end
   end
+
+  def destroy
+    session[:user_id] = nil
+    flash[:info] = "You've logged out."
+    redirect_to signin_path
+  end
 end

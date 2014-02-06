@@ -15,4 +15,3 @@
 //= require bootstrap
 //
 //= require jquery-class
-//= require form-validation
