@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  def index
-    @videos = Video.all
+  def front
+    redirect_to home_path if logged_in?
   end
 end

@@ -1,7 +1,16 @@
 class VideosController < ApplicationController
+  before_action :require_user
   before_action :set_video, only: [:show]
 
+  def index
+    @categories = Category.all
+  end
+
   def show; end
+
+  def search
+    @videos = Video.search_by_title(params[:search_terms])
+  end
 
   private
 

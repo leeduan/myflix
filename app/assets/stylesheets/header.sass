@@ -3,13 +3,15 @@ section#top-header
   margin: 0
   margin-bottom: 20px
   padding: 12px 0
+  min-height: 58px
   border-radius: 5px
   a
     color: white
   h1
+    padding-top: 6px
     font-size: 20px
   > ul
-    padding-top: 12px
+    padding-top: 6px
     li
       float: left
       margin-right: 30px
@@ -17,14 +19,17 @@ section#top-header
       &:first-of-type
         margin-left: -15px
   form
-    padding-top: 6px
     margin: 0
-    input[type="text"]
-      width: 320px
-      float: left
+    .form-group
+      max-width: 320px
+      width: 40%
+      input[type="text"]
+        width: 100%
     input[type="submit"]
       margin-left: 10px
       float: left
+  form.col-md-6
+    width: 50%
   #user_links
     padding-top: 8px
     > ul
