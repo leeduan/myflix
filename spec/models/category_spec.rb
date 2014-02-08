@@ -23,21 +23,21 @@ describe Category do
 
     context 'less than six videos' do
       before do
-        2.times { |i| Fabricate(:video, title: "South Park #{i}") }
+        2.times { |i| Fabricate(:video) }
       end
       it { should.count == 2 }
     end
 
     context 'multiple videos' do
       before do
-        6.times { |i| Fabricate(:video, title: "South Park #{i}") }
+        6.times { |i| Fabricate(:video) }
       end
       it { should.count == 6 }
     end
 
     context 'more than six videos' do
       before do
-        6.times { |i| Fabricate(:video, title: "South Park #{i}") }
+        6.times { |i| Fabricate(:video) }
         @first_video = Fabricate(:video, created_at: 1.day.ago)
       end
       it { should.count == 6 }

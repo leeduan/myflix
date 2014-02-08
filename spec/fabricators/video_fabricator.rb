@@ -1,5 +1,5 @@
 Fabricator(:video) do
-  title 'South Park'
-  description 'A video'
+  title Faker::Lorem.sentence
+  description Faker::Lorem.sentences.join(' ')
   category
 end

@@ -1,3 +1,3 @@
 Fabricator(:category) do
-  name 'TV comedies'
+  name Faker::Lorem.words.join(' ')
 end
