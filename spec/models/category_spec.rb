@@ -5,16 +5,16 @@ describe Category do
   it { should validate_presence_of(:name) }
 
   describe '#recent_videos' do
-    let(:category) { Category.create(name: 'action') }
+    let(:category) { Fabricate(:category) }
     let(:should) { category.recent_videos }
 
     context 'videos descending created at order' do
       before do
-        @star_wars = category.videos.create(title: 'Star Wars', description: 'Great video!')
-        @star_trek = category.videos.create(title: 'Star Trek', description: 'Great video!', created_at: 1.day.ago)
-        @rock_star = category.videos.create(title: 'Thor',      description: 'Great video!', created_at: 2.day.ago)
+        @video_3 = Fabricate(:video, created_at: 2.day.ago)
+        @video_1 = Fabricate(:video)
+        @video_2 = Fabricate(:video, created_at: 1.day.ago)
       end
-      it { should == [@star_wars, @star_trek, @rock_star] }
+      it { should == [@video_1, @video_2, @video_3] }
     end
 
     context 'no videos' do
@@ -23,22 +23,22 @@ describe Category do
 
     context 'less than six videos' do
       before do
-        2.times { |i| category.videos.create(title: "Star Wars #{i}", description: 'Great video!') }
+        2.times { |i| Fabricate(:video, title: "South Park #{i}") }
       end
       it { should.count == 2 }
     end
 
     context 'multiple videos' do
       before do
-        6.times { |i| category.videos.create(title: "Star Wars #{i}", description: 'Great video!') }
+        6.times { |i| Fabricate(:video, title: "South Park #{i}") }
       end
       it { should.count == 6 }
     end
 
     context 'more than six videos' do
       before do
-        6.times { |i| category.videos.create(title: "Star Wars #{i}", description: 'Great video!') }
-        @first_video = category.videos.create(title: "Yesterday", created_at: 1.day.ago)
+        6.times { |i| Fabricate(:video, title: "South Park #{i}") }
+        @first_video = Fabricate(:video, created_at: 1.day.ago)
       end
       it { should.count == 6 }
       it { should.should_not == @first_video}
