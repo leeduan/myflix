@@ -10,11 +10,11 @@ describe Category do
 
     context 'videos descending created at order' do
       before do
-        @video_3 = Fabricate(:video, created_at: 2.day.ago)
-        @video_1 = Fabricate(:video)
-        @video_2 = Fabricate(:video, created_at: 1.day.ago)
+        @third_video = Fabricate(:video, created_at: 2.day.ago)
+        @first_video = Fabricate(:video)
+        @second_video = Fabricate(:video, created_at: 1.day.ago)
       end
-      it { should == [@video_1, @video_2, @video_3] }
+      it { should == [@first_video, @second_video, @third_video] }
     end
 
     context 'no videos' do
