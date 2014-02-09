@@ -10,23 +10,23 @@ describe Video do
     let!(:back_to_future) { Fabricate(:video, title: 'Back to the Future') }
 
     it 'returns an array of all matches ordered by created_at' do
-      Video.search_by_title('Futur').should == [back_to_future, futurama]
+      expect(Video.search_by_title('Futur')).to eq([back_to_future, futurama])
     end
 
     it 'returns an array of one video for a partial match' do
-      Video.search_by_title('urama').should == [futurama]
+      expect(Video.search_by_title('urama')).to eq([futurama])
     end
 
     it 'returns an array of one video for an exact match' do
-      Video.search_by_title('Futurama').should == [futurama]
+      expect(Video.search_by_title('Futurama')).to eq([futurama])
     end
 
     it 'returns an empty array if there is no match' do
-      Video.search_by_title('Hello').should == []
+      expect(Video.search_by_title('Hello')).to eq([])
     end
 
     it 'returns an empty array for a search with an empty string' do
-      Video.search_by_title('').should == []
+      expect(Video.search_by_title('')).to eq([])
     end
   end
 end
