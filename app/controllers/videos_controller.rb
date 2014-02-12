@@ -6,7 +6,10 @@ class VideosController < ApplicationController
     @categories = Category.all
   end
 
-  def show; end
+  def show
+    @review = Review.new
+    @reviews = @video.reviews
+  end
 
   def search
     @videos = Video.search_by_title(params[:search_terms])
