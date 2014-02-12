@@ -21,7 +21,7 @@
             = f.label :rating, 'Rate this video'
             .row
               .col-sm-3
-                = f.select :rating, [['5 Stars', 5], ['4 Stars', 4], ['3 Stars', 3], ['2 Stars', 2], ['1 Stars', 1]], {}, { :class => 'form-control' }
+                = f.select :rating, options_for_select([5,4,3,2,1].map {|number| [pluralize(number, 'Star')]}), {}, { :class => 'form-control' }
           .form-group
             = f.label :description, 'Write Review'
             .row
@@ -29,7 +29,7 @@
                 = f.text_area :description, label: 'Write Review', class: 'form-control', rows: '6'
         %fieldset.form-group.actions.clearfix
           = f.submit 'Submit', class: 'btn btn-primary'
-          = link_to 'Cancel', home_path, class: 'btn btn-default'
+          = link_to 'Cancel', @video, class: 'btn btn-default'
       %header
         %h3 User Reviews (#{@video.reviews.count})
       %ul
