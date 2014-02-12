@@ -10,24 +10,40 @@
       this.submitEl.on('click', $.proxy(this.submit, this));
     },
     submit: function(e) {
-      if (!this.checkInputs()) e.preventDefault();
+      if (!this.formValidity()) e.preventDefault();
     },
-    checkInputs: function(e) {
-      var validArr,
+    formValidity: function(e) {
+      var validInputs = [],
+          validTexts = [],
           self = this,
-          els = this.el.find('input[type="text"], input[type="email"], input[type="password"]');
-
-      validArr = $.makeArray(els).map(function(el) {
-        var valid, attr = $(el).attr('type');
-        if (attr === 'text' || attr === 'password') {
-          valid = self.checkText(el);
-        } else if (attr === 'email') {
-          valid = self.checkEmail(el);
-        }
-        self.renderValidation($(el), !valid, attr);
-        return valid;
-      });
-      return validArr.every(function(boolean) { return boolean });
+          els = this.el.find('input[type="text"], input[type="email"], input[type="password"]'),
+          textareas = this.el.find('textarea');
+      if (els.length > 0) {
+        validInputs = $.makeArray(els).map(function(el) {
+          return self.processEachInput(el);
+        });
+      }
+      if (textareas.length > 0) {
+        validTexts = $.makeArray(textareas).map(function(el) {
+          return self.processEachText(el);
+        });
+      }
+      return validInputs.concat(validTexts).every(function(boolean) { return boolean });
+    },
+    processEachInput: function(el) {
+      var valid, attr = $(el).attr('type');
+      if (attr === 'text' || attr === 'password') {
+        valid = this.checkText(el);
+      } else if (attr === 'email') {
+        valid = this.checkEmail(el);
+      }
+      this.renderValidation($(el), !valid, attr);
+      return valid;
+    },
+    processEachText: function(el) {
+      valid = this.checkText(el);
+      this.renderValidation($(el), !valid);
+      return valid;
     },
     checkText: function(el) {
       return el.value.length > this.blank;
