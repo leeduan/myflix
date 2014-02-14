@@ -15,6 +15,19 @@ section.my_queue
       tr
         th, td
           text-align: center
+        th
+          &:nth-of-type(1)
+            width: 10%
+          &:nth-of-type(2)
+            width: 30%
+          &:nth-of-type(3)
+            width: 10%
+          &:nth-of-type(4)
+            width: 20%
+          &:nth-of-type(5)
+            width: 15%
+          &:nth-of-type(6)
+            width: 15%
         td
           input[type="text"]
             width: 40px
@@ -22,3 +35,4 @@ section.my_queue
             width: 80px
           select
             width: 100px
+            display: table-cell

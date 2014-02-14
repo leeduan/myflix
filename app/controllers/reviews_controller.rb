@@ -10,7 +10,6 @@ class ReviewsController < ApplicationController
       flash[:info] = 'Your review was added.'
       redirect_to video_path(@video)
     else
-      # @video.reload
       @reviews = @video.reviews.reload
       render 'videos/show'
     end
