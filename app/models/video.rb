@@ -17,6 +17,6 @@ class Video < ActiveRecord::Base
   end
 
   def exists_in_queue?(user)
-    queue_items.any? { |queue_item| queue_item.user_id = user.id }
+    queue_items.any? { |queue_item| queue_item.user_id == user.id }
   end
 end
