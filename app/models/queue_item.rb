@@ -9,13 +9,7 @@ class QueueItem < ActiveRecord::Base
 
   def rating
     index = self.video.reviews.index { |review| review.user == self.user }
-    rating = self.video.reviews[index].rating if index
-
-    if rating && rating > 1
-      "#{rating} Stars"
-    elsif rating
-      "#{rating} Star"
-    end
+    self.video.reviews[index].rating if index
   end
 
   def category_name

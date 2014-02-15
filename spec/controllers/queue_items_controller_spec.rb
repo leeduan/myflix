@@ -79,4 +79,48 @@ describe QueueItemsController do
       end
     end
   end
+
+  describe 'DELETE destroy' do
+    context 'with unauthenticated users' do
+      it 'redirects user to signin path' do
+        post :create, video_id: 1
+        expect(response).to redirect_to signin_path
+      end
+    end
+
+    context 'with authenticated users' do
+      let(:user) { Fabricate(:user) }
+      let(:queue_item) { Fabricate(:queue_item, user: user) }
+
+      before do
+        session[:user_id] = user.id
+      end
+
+      it 'deletes the queue item' do
+        delete :destroy, id: queue_item.id
+        expect(QueueItem.count).to eq(0)
+      end
+
+      it 'does not delete the queue item if it does not belong to current user' do
+        other_user = Fabricate(:user, email: 'example@example.com')
+        other_queue_item = Fabricate(:queue_item, user: other_user)
+        delete :destroy, id: other_queue_item.id
+        expect(QueueItem.exists?(other_queue_item.id)).to eq(true)
+      end
+
+      it 'reorders user queue list order sequentially' do
+        2.times { |i| Fabricate(:queue_item, user: user) }
+        delete_id = queue_item.id
+        Fabricate(:queue_item, user: user)
+        Fabricate(:queue_item, user: user)
+        delete :destroy, id: delete_id
+        expect(QueueItem.last.list_order).to eq(4)
+      end
+
+      it 'redirects to my queue page' do
+        delete :destroy, id: queue_item.id
+        expect(response).to redirect_to my_queue_path
+      end
+    end
+  end
 end

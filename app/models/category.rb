@@ -4,6 +4,6 @@ class Category < ActiveRecord::Base
   validates_presence_of :name
 
   def recent_videos
-    self.videos.first(6)
+    videos.first(6)
   end
 end

@@ -24,18 +24,11 @@ describe QueueItem do
       expect(queue_item.rating).to be_nil
     end
 
-    it 'returns 1 star if rating is 1 Star for current user' do
-      review = Fabricate(:review, rating: 1, user: user)
+    it 'returns rating if user has reviewed video' do
+      review = Fabricate(:review, rating: 2, user: user)
       video.reviews << review
       queue_item = Fabricate(:queue_item, video: video, user: user)
-      expect(queue_item.rating).to eq('1 Star')
-    end
-
-    it 'returns pluralized star if review is higher than 1 star' do
-      review = Fabricate(:review, rating: 5, user: user)
-      video.reviews << review
-      queue_item = Fabricate(:queue_item, video: video, user: user)
-      expect(queue_item.rating).to eq('5 Stars')
+      expect(queue_item.rating).to eq(2)
     end
   end
 
