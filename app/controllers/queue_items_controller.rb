@@ -9,13 +9,8 @@ class QueueItemsController < ApplicationController
 
   def create
     video = Video.find(params[:video_id])
-
-    if queue_video(video).valid?
-      redirect_to my_queue_path
-    else
-      flash.now[:danger] = 'The video is already in your queue.'
-      render 'videos/show'
-    end
+    create_queue_video(video)
+    redirect_to my_queue_path
   end
 
   def update; end
@@ -24,7 +19,7 @@ class QueueItemsController < ApplicationController
 
   private
 
-  def queue_video(video)
+  def create_queue_video(video)
     QueueItem.create(video: video, user: current_user, list_order: new_queue_item_order)
   end
 
