@@ -10,9 +10,13 @@ class Video < ActiveRecord::Base
   end
 
   def average_rating
-    if self.reviews.count > 0
-      average = self.reviews.inject(0.0){|sum, review| sum + review.rating.to_f } / self.reviews.count
+    if reviews.count > 0
+      average = reviews.inject(0.0){|sum, review| sum + review.rating.to_f } / reviews.count
       average.round(1)
     end
+  end
+
+  def exists_in_queue?(user)
+    queue_items.any? { |queue_item| queue_item.user_id = user.id }
   end
 end

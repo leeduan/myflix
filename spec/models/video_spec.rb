@@ -67,4 +67,20 @@ describe Video do
       expect(video.average_rating).to eq((rating/count).round(1))
     end
   end
+
+  describe '#exists_in_queue?' do
+    it 'returns true if video exists in current user queue' do
+      user = Fabricate(:user)
+      video = Fabricate(:video)
+      queue_item = Fabricate(:queue_item, user: user, video: video)
+      expect(video.exists_in_queue?(user)).to eq(true)
+    end
+
+    it 'returns false if video does not exist in current user queue' do
+      user = Fabricate(:user)
+      video = Fabricate(:video)
+      2.times { Fabricate(:queue_item, user: user) }
+      expect(video.exists_in_queue?(user)).to eq(false)
+    end
+  end
 end
