@@ -2,9 +2,7 @@ class QueueItemsController < ApplicationController
   before_action :require_user
 
   def index
-    @queue_items = current_user.queue_items.sort do |item_1, item_2|
-      item_1.list_order <=> item_2.list_order
-    end
+    @queue_items = sort_queue_items_by_order
   end
 
   def create
@@ -38,9 +36,12 @@ class QueueItemsController < ApplicationController
     current_user.queue_items.count + 1
   end
 
+  def sort_queue_items_by_order
+    current_user.queue_items.sort { |item_1, item_2| item_1.list_order <=> item_2.list_order }
+  end
+
   def update_order_list
-    queue_items = current_user.queue_items.sort { |x,y| x.list_order <=> y.list_order }
-    queue_items.each_with_index do |queue_item, i|
+    sort_queue_items_by_order.each_with_index do |queue_item, i|
       i += 1
       unless queue_item.list_order == i
         queue_item.list_order = i
