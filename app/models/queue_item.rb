@@ -7,6 +7,8 @@ class QueueItem < ActiveRecord::Base
   delegate :category, to: :video
   delegate :title, to: :video, prefix: :video
 
+  validates_numericality_of :list_order, { only_integer: true }
+
   def rating
     index = self.video.reviews.index { |review| review.user == self.user }
     self.video.reviews[index].rating if index
