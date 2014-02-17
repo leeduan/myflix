@@ -9,12 +9,20 @@ class QueueItem < ActiveRecord::Base
 
   validates_numericality_of :list_order, { only_integer: true }
 
+  def self.already_exists?(video, user)
+    find_by user: user, video: video
+  end
+
   def rating
-    index = self.video.reviews.index { |review| review.user == self.user }
-    self.video.reviews[index].rating if index
+    index = video.reviews.index { |review| review.user == user }
+    video.reviews[index].rating if index
   end
 
   def category_name
     category.name
+  end
+
+  def user_has_access?(user)
+    user_id == user.id
   end
 end
