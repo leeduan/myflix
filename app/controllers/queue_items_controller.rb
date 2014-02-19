@@ -17,8 +17,8 @@ class QueueItemsController < ApplicationController
     begin
       update_queue_items
       current_user.normalize_queue_item_list_order
-    rescue ActiveRecord::RecordInvalid
-      flash[:danger] = 'Invalid list order numbers.'
+    rescue ActiveRecord::RecordInvalid => invalid
+      flash[:danger] = 'Sorry, invalid list order.'
     end
     redirect_to my_queue_path
   end
@@ -39,7 +39,7 @@ class QueueItemsController < ApplicationController
       params[:queue_items].each do |queue_item_data|
         queue_item = QueueItem.find(queue_item_data[:id])
         if queue_item.user_has_access?(current_user)
-          queue_item.update_attributes!(list_order: queue_item_data[:list_order])
+          queue_item.update_attributes!(list_order: queue_item_data[:list_order], rating: queue_item_data[:rating])
         end
       end
     end
