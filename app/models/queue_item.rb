@@ -36,8 +36,6 @@ class QueueItem < ActiveRecord::Base
     user_id == current_user.id
   end
 
-  private
-
   def review
     @review ||= Review.where(user: user, video: video).first
   end
