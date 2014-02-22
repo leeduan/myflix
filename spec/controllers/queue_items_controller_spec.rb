@@ -48,7 +48,7 @@ describe QueueItemsController do
         video_2 = Fabricate(:video)
         Fabricate(:queue_item, video: video_1, user: current_user)
         post :create, video_id: video_2.id
-        expect(QueueItem.where(video: video_2, user: current_user).first.list_order).to eq(2)
+        expect(current_user.queue_items.where(video: video_2).first.list_order).to eq(2)
       end
 
       it 'creates a new queue item if the video is not in user queue' do
