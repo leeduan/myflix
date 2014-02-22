@@ -5,43 +5,29 @@ describe Category do
   it { should validate_presence_of(:name) }
 
   describe '#recent_videos' do
-    let!(:category) { Fabricate(:category) }
-    subject { category.recent_videos }
+    let(:category) { Fabricate(:category) }
 
-    context 'videos descending created at order' do
-      before do
-        @third_video = Fabricate(:video, created_at: 2.day.ago, category: category)
-        @first_video = Fabricate(:video, category: category)
-        @second_video = Fabricate(:video, created_at: 1.day.ago, category: category)
-      end
-      it { should == [@first_video, @second_video, @third_video] }
+    it 'returns array of videos descending created at order' do
+      video_3 = Fabricate(:video, created_at: 2.day.ago, category: category)
+      video_1 = Fabricate(:video, category: category)
+      video_2 = Fabricate(:video, created_at: 1.day.ago, category: category)
+      expect(category.recent_videos).to eq([video_1, video_2, video_3])
     end
 
-    context 'no videos' do
-      it { should == [] }
+    it 'returns an empty array' do
+      expect(category.recent_videos).to eq([])
     end
 
-    context 'less than six videos' do
-      before do
-        2.times { |i| Fabricate(:video, category: category) }
-      end
-      it { should have(2).items }
+    it 'returns multiple videos up to six' do
+      6.times { Fabricate(:video, category: category) }
+      expect(category.recent_videos.count).to eq(6)
     end
 
-    context 'multiple videos' do
-      before do
-        6.times { |i| Fabricate(:video, category: category) }
-      end
-      it { should have(6).items }
-    end
-
-    context 'more than six videos' do
-      before do
-        6.times { |i| Fabricate(:video, category: category) }
-        @first_video = Fabricate(:video, created_at: 1.day.ago, category: category)
-      end
-      it { should have(6).items }
-      it { should_not include(@first_video) }
+    it 'more than six videos' do
+      6.times { Fabricate(:video, category: category) }
+      video_1 = Fabricate(:video, created_at: 1.day.ago, category: category)
+      expect(category.recent_videos.count).to eq(6)
+      expect(category.recent_videos).to_not include(video_1)
     end
   end
 end

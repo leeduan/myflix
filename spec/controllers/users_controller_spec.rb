@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe UsersController do
   describe 'GET new' do
+    before { set_current_user }
+
     it 'sets @user' do
       get :new
       expect(assigns(:user)).to be_a_new(User)
@@ -9,8 +11,6 @@ describe UsersController do
     end
 
     it 'redirects the user to home if already signed in' do
-      user = Fabricate(:user)
-      session[:user_id] = user.id
       get :new
       expect(response).to redirect_to home_path
     end

@@ -64,7 +64,7 @@ describe Video do
         count += 1
         video.reviews << review
       end
-      expect(video.average_rating).to eq((rating/count).round(1))
+      expect(video.average_rating).to eq((rating / count).round(1))
     end
   end
 

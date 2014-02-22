@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe SessionsController do
+  before { set_current_user }
+
   describe 'GET new' do
     it 'redirects user to home if signed in' do
-      session[:user_id] = Fabricate(:user).id
       get :new
       expect(response).to redirect_to home_path
     end
 
     it 'renders template if not signed in' do
+      clear_current_user
       get :new
       expect(response).to render_template :new
     end
@@ -16,15 +18,10 @@ describe SessionsController do
 
   describe 'POST create' do
     context 'params valid' do
-      before do
-        @email_address = 'example@example.com'
-        @password = 'password'
-        @user = Fabricate(:user, email: @email_address, password: @password)
-        get :create, email: @email_address, password: @password
-      end
+      before { get :create, email: current_user.email, password: 'password' }
 
       it 'sets user session' do
-        expect(session[:user_id]).to eq(@user.id)
+        expect(session[:user_id]).to eq(current_user.id)
       end
 
       it 'sets the notice' do
@@ -37,12 +34,10 @@ describe SessionsController do
     end
 
     context 'params invalid' do
-      before do
-        Fabricate(:user)
-        get :create
-      end
+      before { get :create }
 
       it 'does not set session' do
+        clear_current_user
         expect(session[:user_id]).to be_nil
       end
 
@@ -57,10 +52,7 @@ describe SessionsController do
   end
 
   describe 'GET destroy' do
-    before do
-      session[:user_id] = Fabricate(:user).id
-      get :destroy
-    end
+    before { get :destroy }
 
     it 'removes session' do
       expect(session[:user_id]).to be_nil
