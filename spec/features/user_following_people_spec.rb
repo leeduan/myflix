@@ -13,13 +13,13 @@ feature 'user following people' do
 
     click_on_video_on_home_page(video)
     visit_user_profile(other_user)
-    expect(page).to have_content(user.full_name)
+    expect(page).to have_content(other_user.full_name)
 
     follow_user
-    expect(page).to have_content(user.full_name)
+    expect(page).to have_content(other_user.full_name)
 
     unfollow_user
-    expect(page).to_not have_content(user.full_name)
+    expect(page).to_not have_content(other_user.full_name)
   end
 
   def visit_user_profile(user)
