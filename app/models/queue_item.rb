@@ -33,7 +33,7 @@ class QueueItem < ActiveRecord::Base
   end
 
   def user_has_access?(current_user)
-    user_id == current_user.id
+    user == current_user
   end
 
   def review

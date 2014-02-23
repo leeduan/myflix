@@ -1,0 +1,21 @@
+%section.people
+  %header
+    %h2 People I Follow
+  %table.table
+    %thead
+      %tr
+        %th
+        %th Videos in Queue
+        %th Followers
+        %th Unfollow
+    %tbody
+      - @relationships.each do |relationship|
+        %tr
+          %td
+            = image_tag avatar_url(relationship.leader, 40)
+            = link_to relationship.leader.full_name, relationship.leader
+          %td.extra-padding= relationship.leader.queue_count
+          %td.extra-padding= relationship.leader.followers_count
+          %td.extra-padding
+            = link_to relationship, method: :delete do
+              %i.glyphicon.glyphicon-remove

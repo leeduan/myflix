@@ -5,7 +5,8 @@
         %header
           = image_tag avatar_url(@user, 40)
           %h2 #{@user.full_name}'s video collections (#{@user.queue_items.count})
-          %button.btn.btn-default Follow
+          - if current_user.can_follow?(@user)
+            = link_to 'Follow', relationships_path(leader_id: @user), method: :post, class: 'btn btn-default'
         %table.table
           %thead
             %tr

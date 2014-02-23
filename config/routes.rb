@@ -9,12 +9,14 @@ Myflix::Application.routes.draw do
   get '/getstarted', to: 'users#new'
   get '/my_queue', to: 'queue_items#index'
   post '/my_queue', to: 'queue_items#update_queue'
+  get '/people', to: 'relationships#index'
 
-  resources :users, only: [:create, :show]
   resources :videos, only: [:show] do
     post :search, on: :collection
     resources :reviews, only: [:create]
   end
+  resources :users, only: [:create, :show]
   resources :categories, only: [:show]
   resources :queue_items, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
 end
