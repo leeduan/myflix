@@ -14,16 +14,16 @@ describe Category do
       expect(category.recent_videos).to eq([video_1, video_2, video_3])
     end
 
-    it 'returns an empty array' do
+    it 'returns an empty array if category contains no videos' do
       expect(category.recent_videos).to eq([])
     end
 
-    it 'returns multiple videos up to six' do
+    it 'returns multiple videos up to six if category has up to six' do
       6.times { Fabricate(:video, category: category) }
       expect(category.recent_videos.count).to eq(6)
     end
 
-    it 'more than six videos' do
+    it 'returns six videos when there are more than six videos' do
       6.times { Fabricate(:video, category: category) }
       video_1 = Fabricate(:video, created_at: 1.day.ago, category: category)
       expect(category.recent_videos.count).to eq(6)

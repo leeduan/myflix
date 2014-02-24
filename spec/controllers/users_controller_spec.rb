@@ -5,6 +5,7 @@ describe UsersController do
     before { set_current_user }
 
     it 'sets @user' do
+      clear_current_user
       get :new
       expect(assigns(:user)).to be_a_new(User)
       expect(assigns(:user)).not_to eq(User.first)

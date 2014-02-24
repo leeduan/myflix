@@ -60,6 +60,18 @@ describe QueueItem do
     end
   end
 
+  describe '#rating_if_valid' do
+    it 'returns rating if 1, 2, 3, 4, or 5' do
+      queue_item = Fabricate(:queue_item)
+      expect(queue_item.rating_if_valid('3')).to eq('3')
+    end
+
+    it 'returns nil if not valid rating' do
+      queue_item = Fabricate(:queue_item)
+      expect(queue_item.rating_if_valid('0')).to be_nil
+    end
+  end
+
   describe '#category_name' do
     it 'returns the associated video category name' do
       category = Fabricate(:category, name: 'Comedies')
