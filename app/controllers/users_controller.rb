@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
+  before_action :require_user, only: [:show]
+
   def new
-    redirect_to home_path if logged_in?
+    redirect_to home_path and return if logged_in?
     @user = User.new
   end
 
@@ -12,6 +14,10 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
   end
 
   private

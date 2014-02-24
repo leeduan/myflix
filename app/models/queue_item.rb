@@ -19,7 +19,7 @@ class QueueItem < ActiveRecord::Base
   end
 
   def rating=(new_rating)
-    new_rating = [1, 2, 3, 4, 5].include?(new_rating.to_f) ? new_rating : nil
+    new_rating = rating_if_valid(new_rating)
     if review
       review.update_attribute(:rating, new_rating)
     else
@@ -28,15 +28,19 @@ class QueueItem < ActiveRecord::Base
     end
   end
 
+  def rating_if_valid(rating)
+    [1, 2, 3, 4, 5].include?(rating.to_i) ? rating : nil
+  end
+
   def category_name
     category.name
   end
 
   def user_has_access?(current_user)
-    user_id == current_user.id
+    user == current_user
   end
 
   def review
-    @review ||= Review.where(user: user, video: video).first
+    @review ||= Review.find_by(user: user, video: video)
   end
 end

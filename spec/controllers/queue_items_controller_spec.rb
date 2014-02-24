@@ -4,7 +4,7 @@ describe QueueItemsController do
   describe 'GET index' do
     before { set_current_user }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { get :index }
     end
 
@@ -26,7 +26,7 @@ describe QueueItemsController do
   describe 'POST create' do
     before { set_current_user }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { post :create }
     end
 
@@ -72,7 +72,7 @@ describe QueueItemsController do
   describe 'POST update_queue' do
     before { set_current_user }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { post :update_queue }
     end
 
@@ -136,7 +136,7 @@ describe QueueItemsController do
   describe 'DELETE destroy' do
     before { set_current_user }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { delete :destroy, id: 1 }
     end
 

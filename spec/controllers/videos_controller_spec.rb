@@ -3,7 +3,7 @@ require 'spec_helper'
 describe VideosController do
   before { set_current_user }
 
-  it_behaves_like 'require_signin' do
+  it_behaves_like 'require signin' do
     let(:action) { get :show, id: 1 }
   end
 
@@ -33,7 +33,7 @@ describe VideosController do
   describe 'POST search' do
     before { set_current_user }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { get :search, search_terms: 'futur' }
     end
 

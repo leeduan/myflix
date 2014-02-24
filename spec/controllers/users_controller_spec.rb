@@ -5,6 +5,7 @@ describe UsersController do
     before { set_current_user }
 
     it 'sets @user' do
+      clear_current_user
       get :new
       expect(assigns(:user)).to be_a_new(User)
       expect(assigns(:user)).not_to eq(User.first)
@@ -44,6 +45,25 @@ describe UsersController do
       it 'renders the new template' do
         expect(response).to render_template :new
       end
+    end
+  end
+
+  describe 'GET show' do
+    before { set_current_user }
+
+    it_behaves_like 'require signin' do
+      let(:action) { get :show, id: 1 }
+    end
+
+    it 'sets @user' do
+      other_user = Fabricate(:user)
+      get :show, id: other_user.id
+      expect(assigns(:user)).to eq(other_user)
+    end
+
+    it 'renders the show template' do
+      get :show, id: 1
+      expect(response).to render_template :show
     end
   end
 end

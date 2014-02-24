@@ -6,7 +6,7 @@ describe ReviewsController do
 
     let(:video) { Fabricate(:video) }
 
-    it_behaves_like 'require_signin' do
+    it_behaves_like 'require signin' do
       let(:action) { post :create, video_id: 1 }
     end
 

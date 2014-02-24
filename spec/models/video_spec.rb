@@ -56,15 +56,10 @@ describe Video do
 
     it 'returns the correct average of all ratings' do
       video = Fabricate(:video)
-      rating = 0.0
-      count = 0
-      5.times do
-        review = Fabricate(:review)
-        rating += review.rating.to_f
-        count += 1
-        video.reviews << review
-      end
-      expect(video.average_rating).to eq((rating / count).round(1))
+      review_1 = Fabricate(:review, video: video, rating: 3)
+      review_2 = Fabricate(:review, video: video, rating: 3)
+      review_3 = Fabricate(:review, video: video, rating: 4)
+      expect(video.average_rating).to eq(3.3)
     end
   end
 

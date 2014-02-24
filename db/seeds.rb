@@ -6,92 +6,133 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan')
-comedies = Category.create(name: 'TV comedies')
-dramas = Category.create(name: 'TV Dramas')
-reality = Category.create(name: 'Reality TV')
+user_1 = User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan')
+user_2 = User.create(email: 'lee.duan1@gmail.com', password: 'password', full_name: 'Li Duan')
+user_3 = User.create(email: 'babu@leeduan.com', password: 'password', full_name: 'Jolly Babu')
 
-Video.create(
+category_1 = Category.create(name: 'TV comedies')
+category_2 = Category.create(name: 'TV Dramas')
+category_3 = Category.create(name: 'Reality TV')
+
+video_1 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
   small_cover_url: 'monk',
   large_cover_url: 'monk_large',
-  category: dramas
+  category: category_2
 )
-Video.create(
+video_2 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
   small_cover_url: 'monk',
   large_cover_url: 'monk_large',
-  category: reality
+  category: category_3
 )
-Video.create(
+video_3 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
   small_cover_url: 'south_park',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_1
 )
-Video.create(
+video_4 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
   small_cover_url: 'futurama',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_2
 )
-Video.create(
+video_5 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
   small_cover_url: 'family_guy',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_3
 )
-Video.create(
+video_6 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
   small_cover_url: 'south_park',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_1
 )
-Video.create(
+video_7 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
   small_cover_url: 'futurama',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_1
 )
-Video.create(
+video_8 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
   small_cover_url: 'family_guy',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_2
 )
-Video.create(
+video_9 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
   small_cover_url: 'south_park',
   large_cover_url: 'large_placeholder',
-  category: comedies
+  category: category_3
+)
+video_10 = Video.create(
+  title: 'Family Guy',
+  description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
+  small_cover_url: 'family_guy',
+  large_cover_url: 'large_placeholder',
+  category: category_1
+)
+video_11 = Video.create(
+  title: 'Monk',
+  description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
+  small_cover_url: 'monk',
+  large_cover_url: 'monk_large',
+  category: category_1
+)
+video_12 = Video.create(
+  title: 'Family Guy',
+  description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
+  small_cover_url: 'family_guy',
+  large_cover_url: 'large_placeholder',
+  category: category_1
+)
+video_13 = Video.create(
+  title: 'Monk',
+  description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
+  small_cover_url: 'monk',
+  large_cover_url: 'monk_large',
+  category: category_1
 )
 
 Review.create(
   rating: 5,
   description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  video: Video.first,
-  user: User.first
+  video: video_1,
+  user: user_1
 )
 
 Review.create(
   rating: 1,
   description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  video: Video.first,
-  user: User.first
+  video: video_2,
+  user: user_1
 )
 
 Review.create(
   rating: 4,
   description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  video: Video.first,
-  user: User.first
+  video: video_3,
+  user: user_2
 )
+
+QueueItem.create(user: user_1, video: video_1, list_order: 1)
+QueueItem.create(user: user_1, video: video_2, list_order: 2)
+QueueItem.create(user: user_1, video: video_3, list_order: 3)
+QueueItem.create(user: user_2, video: video_4, list_order: 1)
+QueueItem.create(user: user_2, video: video_5, list_order: 2)
+
+user_1.following_relationships.create(leader: user_2)
+user_2.following_relationships.create(leader: user_1)
+user_2.following_relationships.create(leader: user_3)

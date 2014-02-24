@@ -18,7 +18,7 @@ describe SessionsController do
 
   describe 'POST create' do
     context 'params valid' do
-      before { get :create, email: current_user.email, password: 'password' }
+      before { post :create, email: current_user.email, password: 'password' }
 
       it 'sets user session' do
         expect(session[:user_id]).to eq(current_user.id)
@@ -34,7 +34,7 @@ describe SessionsController do
     end
 
     context 'params invalid' do
-      before { get :create }
+      before { post :create }
 
       it 'does not set session' do
         clear_current_user
