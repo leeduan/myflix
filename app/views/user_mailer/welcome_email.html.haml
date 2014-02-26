@@ -1,0 +1,15 @@
+!!! 5
+%html(lang="en-US")
+  %head
+    %title MyFLiX - Welcome to MyFLiX!
+    %meta(charset="UTF-8")
+  %body
+    %header
+      %h4 Welcome to MyFLiX, #{@user.full_name}!
+    %p You have successfully signed up for MyFLiX.
+    %p
+      To login, please visit
+      = link_to 'MyFlix', @url
+    %hr(style="margin-top: 2em;")
+    %footer
+      %p &copy 2014 MyFLiX
