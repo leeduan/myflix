@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
   def front
-    redirect_to home_path and return if logged_in?
+    redirect_current_user_home
   end
 end

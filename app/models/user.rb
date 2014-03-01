@@ -30,4 +30,9 @@ class User < ActiveRecord::Base
       queue_item.update_attributes(list_order: index + 1)
     end
   end
+
+  def generate_password_token
+    self.password_token = SecureRandom.urlsafe_base64
+    self.save
+  end
 end

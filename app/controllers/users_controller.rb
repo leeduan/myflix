@@ -2,13 +2,14 @@ class UsersController < ApplicationController
   before_action :require_user, only: [:show]
 
   def new
-    redirect_to home_path and return if logged_in?
+    redirect_current_user_home
     @user = User.new
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
+      UserMailer.welcome_email(@user).deliver
       session[:user_id] = @user.id
       redirect_to home_path
     else

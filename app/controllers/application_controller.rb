@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
 
+  def redirect_current_user_home
+    redirect_to home_path and return if logged_in?
+  end
+
   def require_user
     unless logged_in?
       flash[:info] = 'Access reserved for members only. Please sign in first.'

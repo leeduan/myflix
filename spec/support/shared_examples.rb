@@ -5,3 +5,11 @@ shared_examples 'require signin' do
     expect(response).to redirect_to signin_path
   end
 end
+
+shared_examples 'redirect home current user' do
+  it 'redirects to home page' do
+    set_current_user
+    action
+    expect(response).to redirect_to home_path
+  end
+end

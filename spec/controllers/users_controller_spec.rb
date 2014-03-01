@@ -18,6 +18,8 @@ describe UsersController do
   end
 
   describe 'POST create' do
+    after { ActionMailer::Base.deliveries.clear }
+
     context 'with valid input' do
       before { post :create, user: Fabricate.attributes_for(:user) }
 
@@ -27,6 +29,33 @@ describe UsersController do
 
       it 'redirects the user to home' do
         expect(response).to redirect_to home_path
+      end
+    end
+
+    context 'email sending' do
+      let(:user_attributes) { Fabricate.attributes_for(:user) }
+
+      it 'sends out the email with valid inputs' do
+        post :create, user: user_attributes
+        expect(ActionMailer::Base.deliveries).to_not be_empty
+      end
+
+      it 'sends out the email to the right recipient with valid inputs' do
+        post :create, user: user_attributes
+        message = ActionMailer::Base.deliveries.last
+        expect(message.to).to eq([user_attributes[:email]])
+      end
+
+      it 'sends the email containing the user name with valid inputs' do
+        post :create, user: user_attributes
+        message = ActionMailer::Base.deliveries.last
+        expect(message.body).to include(user_attributes[:full_name])
+      end
+
+      it 'does not send out email with invalid inputs' do
+        post :create, user: { email: 'invalid@example.com' }
+        message = ActionMailer::Base.deliveries
+        expect(message).to eq([])
       end
     end
 
