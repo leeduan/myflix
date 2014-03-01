@@ -9,7 +9,7 @@
             = label_tag :email, 'Email Address'
             .row
               .col-sm-6
-                = text_field_tag :email, nil, class: 'form-control', type: 'email'
+                = email_field_tag :email, nil, class: 'form-control'
           .form-group
             = label_tag :password
             .row
@@ -17,3 +17,4 @@
                 = text_field_tag :password, nil, class: 'form-control', type: 'password'
         %fieldset.form-group.action
           = submit_tag 'Sign in', class: 'btn btn-default'
+          = link_to 'Forgot Password?', forgot_password_path

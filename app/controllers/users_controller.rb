@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :require_user, only: [:show]
 
   def new
-    redirect_to home_path and return if logged_in?
+    redirect_current_user_home
     @user = User.new
   end
 

@@ -55,4 +55,13 @@ describe User do
       expect(current_user.followers_count).to eq(3)
     end
   end
+
+  describe '#generate_password_token' do
+    let(:current_user) { Fabricate(:user) }
+
+    it 'sets the password_token of a user' do
+      current_user.generate_password_token
+      expect(current_user.password_token).to_not be_nil
+    end
+  end
 end
