@@ -13,6 +13,8 @@ describe ForgotPasswordsController do
   end
 
   describe 'POST create' do
+    after { ActionMailer::Base.deliveries.clear }
+
     it_behaves_like 'redirect home current user' do
       let(:action) { post :create }
     end
@@ -27,7 +29,6 @@ describe ForgotPasswordsController do
     context 'with existing user email address' do
       let(:user) { Fabricate(:user) }
       before { post :create, email: user.email }
-      after { ActionMailer::Base.deliveries.clear }
 
       it 'creates a user password token' do
         expect(user.reload.password_token).to_not be_nil
