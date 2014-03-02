@@ -8,5 +8,6 @@
           = f.email_field :email, label: 'Email Address'
           = f.password_field :password
           = f.text_field :full_name, label: 'Full Name'
+          = f.hidden_field :invitation_id, value: @user.invitation_id
         %fieldset(class='actions control-group col-sm-offset-2')
           = f.submit 'Sign Up'

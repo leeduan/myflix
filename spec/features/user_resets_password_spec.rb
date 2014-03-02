@@ -4,7 +4,6 @@ feature 'user resets password' do
   given(:user) { User.create(email: 'hello@leeduan.com', password: 'old_password', full_name: 'Lee Duan') }
 
   scenario 'user successfully resets the password' do
-    clear_emails
     visit signin_path
     click_link 'Forgot Password?'
 
@@ -19,7 +18,9 @@ feature 'user resets password' do
 
     fill_in 'email', with: user.email
     fill_in 'password', with: 'new_password'
-    click_button 'Sign in'
+    click_button 'Sign In'
     expect(page).to have_content('You are signed in, enjoy!')
+
+    clear_emails
   end
 end

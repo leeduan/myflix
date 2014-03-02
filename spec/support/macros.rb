@@ -15,7 +15,11 @@ def sign_in(a_user=nil)
   visit signin_path
   fill_in 'Email Address', with: user.email
   fill_in 'Password', with: user.password
-  click_on 'Sign in'
+  click_on 'Sign In'
+end
+
+def sign_out
+  visit signout_path
 end
 
 def click_on_video_on_home_page(video)

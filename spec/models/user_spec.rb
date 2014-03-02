@@ -9,6 +9,19 @@ describe User do
   it { should have_many(:following_relationships) }
   it { should have_many(:leading_relationships) }
 
+  describe '#follow' do
+    let(:current_user) { Fabricate(:user) }
+    let(:other_user) { Fabricate(:user) }
+
+    it 'follows another user' do
+      expect(current_user.follow(other_user)).to be_instance_of(Relationship)
+    end
+
+    it 'does not follow oneself' do
+      expect(current_user.follow(current_user)).to be_nil
+    end
+  end
+
   describe '#follows?' do
     let(:current_user) { Fabricate(:user) }
     let(:other_user) { Fabricate(:user) }

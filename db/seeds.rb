@@ -7,8 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 user_1 = User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan')
-user_2 = User.create(email: 'lee.duan1@gmail.com', password: 'password', full_name: 'Li Duan')
-user_3 = User.create(email: 'babu@leeduan.com', password: 'password', full_name: 'Jolly Babu')
+user_2 = User.create(email: 'joe@leeduan.com', password: 'password', full_name: 'Joe Smith')
+user_3 = User.create(email: 'john@leeduan.com', password: 'password', full_name: 'John Doe')
+user_4 = User.create(email: 'jolly@leeduan.com', password: 'password', full_name: 'Jolly Babu')
 
 category_1 = Category.create(name: 'TV comedies')
 category_2 = Category.create(name: 'TV Dramas')
@@ -136,3 +137,5 @@ QueueItem.create(user: user_2, video: video_5, list_order: 2)
 user_1.following_relationships.create(leader: user_2)
 user_2.following_relationships.create(leader: user_1)
 user_2.following_relationships.create(leader: user_3)
+user_3.following_relationships.create(leader: user_4)
+user_4.following_relationships.create(leader: user_1)
