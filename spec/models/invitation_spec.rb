@@ -8,12 +8,4 @@ describe Invitation do
   it { should validate_presence_of(:recipient_name) }
   it { should validate_presence_of(:recipient_email) }
   it { should validate_uniqueness_of(:recipient_email).scoped_to(:sender_id) }
-
-  describe '#generate_token' do
-    it 'saves an invitation token before create' do
-      user = Fabricate(:user)
-      invitation = Fabricate(:invitation, sender: user)
-      expect(invitation.token).to_not be_nil
-    end
-  end
 end

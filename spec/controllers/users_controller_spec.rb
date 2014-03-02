@@ -73,7 +73,7 @@ describe UsersController do
       end
 
       it 'shows flash info message' do
-        expect(flash[:info]).to_not be_nil
+        expect(flash[:info]).to be_present
       end
 
       it 'redirects the user to signin path' do

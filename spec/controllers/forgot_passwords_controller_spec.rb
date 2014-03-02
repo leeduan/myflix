@@ -31,7 +31,7 @@ describe ForgotPasswordsController do
       before { post :create, email: user.email }
 
       it 'creates a user password token' do
-        expect(user.reload.password_token).to_not be_nil
+        expect(user.reload.password_token).to be_present
       end
 
       it 'sends an email with the user password token' do

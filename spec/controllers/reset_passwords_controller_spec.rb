@@ -47,7 +47,7 @@ describe ResetPasswordsController do
       end
 
       it 'sets the flash info message' do
-        expect(flash[:info]).to_not be_nil
+        expect(flash[:info]).to be_present
       end
 
       it 'redirects to signin page' do

@@ -32,6 +32,10 @@ describe InvitationsController do
       let(:invitation_attributes) { Fabricate.attributes_for(:invitation) }
       before { post :create, invitation: invitation_attributes }
 
+      it_behaves_like 'generates token' do
+        let(:object) { Invitation.last }
+      end
+
       it 'creates an invitation' do
         expect(Invitation.count).to eq(1)
       end
@@ -69,7 +73,7 @@ describe InvitationsController do
       end
 
       it 'sets flash danger message' do
-        expect(flash[:danger]).to_not be_nil
+        expect(flash[:danger]).to be_present
       end
 
       it 'sets @invitation' do
