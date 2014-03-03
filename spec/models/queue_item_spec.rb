@@ -54,10 +54,9 @@ describe QueueItem do
     end
 
     it 'creates a review with the rating if the review is not present' do
-      review = Fabricate(:review, video: video, rating: 3, user: user)
       queue_item = Fabricate(:queue_item, video: video, user: user)
       queue_item.rating = 5
-      expect(Review.last.rating).to eq(5)
+      expect(Review.first.rating).to eq(5)
     end
 
     it 'does not save a rating if input is invalid' do
