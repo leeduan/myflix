@@ -4,10 +4,10 @@ This web application is a Netflix-like clone built with Ruby on Rails. Based on 
 
 == Getting Started
 
-1. Clone project by running <tt>clone git@github.com:leeduan/myflix.git</tt>
-2. Tested environment setup procedures
-   * Use RVM or rbenv to set ruby version to <tt>2.0.0-p247</tt>
-   * Install <tt>bundler</tt> by typing <tt>gem install bundler</tt>
-   * Run <tt>bundle install</tt>
-   * If running on Windows, please use a Linux VM such as {this}[https://github.com/banyan/chef-rails-dev-box]
-3. Run <tt>rails server</tt> to start application at localhost:3000
+1. Clone project by running <tt>clone git@github.com:leeduan/myflix.git</tt>.
+2. Tested environment setup procedures:
+   * Use RVM or rbenv to set ruby version to <tt>2.0</tt>.
+   * Install <tt>bundler</tt> by typing <tt>gem install bundler</tt>.
+   * Run <tt>bundle</tt> to install gem dependencies.
+   * If running on Windows, use VirtualBox to run a Linux VM.
+3. Run <tt>rails server</tt> to start application at localhost:3000.
