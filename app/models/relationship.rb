@@ -4,7 +4,7 @@ class Relationship < ActiveRecord::Base
   validates :follower_id, presence: true, uniqueness: { scope: :leader_id }
   validates :leader_id, presence: true, uniqueness: { scope: :follower_id }
 
-  def user_has_access?(current_user)
+  def follower_is?(current_user)
     follower == current_user
   end
 end

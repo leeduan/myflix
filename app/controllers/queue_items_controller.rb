@@ -25,7 +25,7 @@ class QueueItemsController < ApplicationController
 
   def destroy
     queue_item = QueueItem.find(params[:id])
-    if queue_item.user_has_access?(current_user)
+    if queue_item.owned_by?(current_user)
       queue_item.destroy
       current_user.normalize_queue_item_list_order
     end
@@ -38,7 +38,7 @@ class QueueItemsController < ApplicationController
     ActiveRecord::Base.transaction do
       params[:queue_items].each do |queue_item_data|
         queue_item = QueueItem.find(queue_item_data[:id])
-        if queue_item.user_has_access?(current_user)
+        if queue_item.owned_by?(current_user)
           queue_item.update_attributes!(list_order: queue_item_data[:list_order], rating: queue_item_data[:rating])
         end
       end
