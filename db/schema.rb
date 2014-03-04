@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301191933) do
+ActiveRecord::Schema.define(version: 20140304043105) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20140301191933) do
 
   create_table "reviews", force: true do |t|
     t.integer  "rating"
-    t.string   "description"
+    t.text     "description"
     t.integer  "video_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 20140301191933) do
 
   create_table "videos", force: true do |t|
     t.string   "title"
-    t.string   "description"
+    t.text     "description"
     t.string   "small_cover_url"
     t.string   "large_cover_url"
     t.datetime "created_at"
