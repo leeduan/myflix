@@ -30,17 +30,6 @@ describe ResetPasswordsController do
     end
   end
 
-  describe 'GET expired' do
-    it_behaves_like 'redirect home current user' do
-      let(:action) { get :expired }
-    end
-
-    it 'renders the expired template' do
-      get :expired
-      expect(response).to render_template :expired
-    end
-  end
-
   describe 'PATCH update' do
     it_behaves_like 'redirect home current user' do
       let(:action) { patch :update, id: 'r2nd3mt0k8n' }
@@ -58,7 +47,7 @@ describe ResetPasswordsController do
       end
 
       it 'sets the flash info message' do
-        expect(flash[:info]).to_not be_nil
+        expect(flash[:info]).to be_present
       end
 
       it 'redirects to signin page' do

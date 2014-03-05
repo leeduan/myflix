@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140227045855) do
+ActiveRecord::Schema.define(version: 20140304043105) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "invitations", force: true do |t|
+    t.integer  "sender_id"
+    t.string   "recipient_name"
+    t.string   "recipient_email"
+    t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,7 +45,7 @@ ActiveRecord::Schema.define(version: 20140227045855) do
 
   create_table "reviews", force: true do |t|
     t.integer  "rating"
-    t.string   "description"
+    t.text     "description"
     t.integer  "video_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -50,11 +59,12 @@ ActiveRecord::Schema.define(version: 20140227045855) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_token"
+    t.integer  "invitation_id"
   end
 
   create_table "videos", force: true do |t|
     t.string   "title"
-    t.string   "description"
+    t.text     "description"
     t.string   "small_cover_url"
     t.string   "large_cover_url"
     t.datetime "created_at"

@@ -1,0 +1,15 @@
+!!! 5
+%html(lang="en-US")
+  %head
+    %title MyFLiX - Request to Join from #{@invitation.sender.full_name}!
+    %meta(charset="UTF-8")
+  %body
+    %header
+      %h4 Hello #{@invitation.recipient_name}, you have been invited to join MyFLiX by #{@invitation.sender.full_name}:
+    %p= @invitation.message
+    %p
+      To join, please visit
+      = link_to 'sign up', register_with_token_url(@invitation.token)
+    %hr(style="margin-top: 2em;")
+    %footer
+      %p &copy 2014 MyFLiX

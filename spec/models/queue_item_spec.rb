@@ -7,7 +7,7 @@ describe QueueItem do
   it { should validate_presence_of(:video_id) }
   it { should validate_uniqueness_of(:user_id).scoped_to(:video_id) }
   it { should validate_uniqueness_of(:video_id).scoped_to(:user_id) }
-  it { should validate_numericality_of(:list_order).only_integer }
+  it { should validate_numericality_of(:list_order).only_integer.is_less_than(6).is_greater_than(0) }
 
   describe '#video_title' do
     it 'returns the associated video title' do
@@ -54,21 +54,16 @@ describe QueueItem do
     end
 
     it 'creates a review with the rating if the review is not present' do
+      queue_item = Fabricate(:queue_item, video: video, user: user)
+      queue_item.rating = 5
+      expect(Review.first.rating).to eq(5)
+    end
+
+    it 'does not save a rating if input is invalid' do
       review = Fabricate(:review, video: video, rating: 3, user: user)
       queue_item = Fabricate(:queue_item, video: video, user: user)
+      queue_item.rating = 0
       expect(Review.first.rating).to eq(3)
-    end
-  end
-
-  describe '#rating_if_valid' do
-    it 'returns rating if 1, 2, 3, 4, or 5' do
-      queue_item = Fabricate(:queue_item)
-      expect(queue_item.rating_if_valid('3')).to eq('3')
-    end
-
-    it 'returns nil if not valid rating' do
-      queue_item = Fabricate(:queue_item)
-      expect(queue_item.rating_if_valid('0')).to be_nil
     end
   end
 

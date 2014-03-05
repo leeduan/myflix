@@ -13,3 +13,9 @@ shared_examples 'redirect home current user' do
     expect(response).to redirect_to home_path
   end
 end
+
+shared_examples 'generates token' do
+  it 'saves a token to self' do
+    expect(object.token).to be_present
+  end
+end

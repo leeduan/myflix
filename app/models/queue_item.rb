@@ -4,7 +4,7 @@ class QueueItem < ActiveRecord::Base
 
   validates :user_id, presence: true, uniqueness: { scope: :video_id }
   validates :video_id, presence: true, uniqueness: { scope: :user_id }
-  validates_numericality_of :list_order, { only_integer: true }
+  validates_numericality_of :list_order, { only_integer: true, less_than: 6, greater_than: 0 }
 
   delegate :category, to: :video
   delegate :reviews, to: :video
@@ -19,28 +19,30 @@ class QueueItem < ActiveRecord::Base
   end
 
   def rating=(new_rating)
-    new_rating = rating_if_valid(new_rating)
+    return unless new_rating_valid?(new_rating)
     if review
-      review.update_attribute(:rating, new_rating)
-    else
+      review.update_column(:rating, new_rating == '' ? nil : new_rating)
+    elsif new_rating.present?
       review = Review.new(user: user, video: video, rating: new_rating)
       review.save(validate: false)
     end
-  end
-
-  def rating_if_valid(rating)
-    [1, 2, 3, 4, 5].include?(rating.to_i) ? rating : nil
   end
 
   def category_name
     category.name
   end
 
-  def user_has_access?(current_user)
+  def owned_by?(current_user)
     user == current_user
   end
 
   def review
     @review ||= Review.find_by(user: user, video: video)
+  end
+
+  private
+
+  def new_rating_valid?(rating)
+    (1..5).include?(rating.to_i) || rating == ''
   end
 end

@@ -9,7 +9,7 @@ describe QueueItemsController do
     end
 
     context 'with authenticated users' do
-      let!(:items) { 4.times.map{ Fabricate(:queue_item, user: current_user) } }
+      let!(:items) { 4.times.map { Fabricate(:queue_item, user: current_user) } }
 
       before { get :index }
 
