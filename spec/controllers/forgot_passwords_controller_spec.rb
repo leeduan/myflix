@@ -13,7 +13,6 @@ describe ForgotPasswordsController do
   end
 
   describe 'POST create' do
-    after { ActionMailer::Base.deliveries.clear }
 
     it_behaves_like 'redirect home current user' do
       let(:action) { post :create }
@@ -22,7 +21,7 @@ describe ForgotPasswordsController do
     context 'with nonexisting user email address' do
       it 'does not send an email' do
         post :create, email: 'invalid@example.com'
-        expect(ActionMailer::Base.deliveries).to eq([])
+        expect(Sidekiq::Extensions::DelayedMailer.jobs).to eq([])
       end
     end
 
@@ -35,13 +34,13 @@ describe ForgotPasswordsController do
       end
 
       it 'sends an email with the user password token' do
-        message = ActionMailer::Base.deliveries.last
-        expect(message.body).to include(user.password_token)
+        message = Sidekiq::Extensions::DelayedMailer.jobs.last['args'][0]
+        expect(message).to include(User.last.password_token)
       end
 
       it 'sends the email to the correct person' do
-        message = ActionMailer::Base.deliveries.last
-        expect(message.to).to eq([user.email])
+        message = Sidekiq::Extensions::DelayedMailer.jobs.last['args'][0]
+        expect(message).to include(user.email)
       end
     end
 

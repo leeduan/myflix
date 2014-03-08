@@ -10,4 +10,6 @@ This web application is a Netflix-like clone built with Ruby on Rails. Based on 
    * Install <tt>bundler</tt> by typing <tt>gem install bundler</tt>.
    * Run <tt>bundle</tt> to install gem dependencies.
    * If running on Windows, use VirtualBox to run a Linux VM.
-3. Run <tt>rails server</tt> to start application at localhost:3000.
+3. Run the server:
+    * Run <tt>rails s</tt> to start application at localhost:3000
+    * Run <tt>foreman start</tt> to start application at localhost:5000 with Heroku Toolbelt installed
