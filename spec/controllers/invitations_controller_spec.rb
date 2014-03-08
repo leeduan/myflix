@@ -22,6 +22,7 @@ describe InvitationsController do
 
   describe 'POST create' do
     before { set_current_user }
+    after {  ActionMailer::Base.deliveries.clear }
 
     it_behaves_like 'require signin' do
       let(:action) { post :create, Fabricate.attributes_for(:invitation) }
@@ -49,13 +50,13 @@ describe InvitationsController do
 
       it 'sends an email to the correct recipient' do
         post :create, invitation: invitation_attributes
-        message = Sidekiq::Extensions::DelayedMailer.jobs.last['args'][0]
-        expect(message).to include(invitation_attributes[:recipient_email])
+        message = ActionMailer::Base.deliveries.last
+        expect(message.to).to eq([invitation_attributes[:recipient_email]])
       end
 
       it 'does not send when input not valid' do
         post :create, invitation: { recipient_email: 'invalid@example.com' }
-        expect(Sidekiq::Extensions::DelayedMailer.jobs).to be_empty
+        expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
 
