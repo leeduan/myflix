@@ -1,3 +1,6 @@
+require 'sidekiq/web'
+require 'admin_constraint'
+
 Myflix::Application.routes.draw do
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'
@@ -27,4 +30,6 @@ Myflix::Application.routes.draw do
   resources :forgot_passwords, only: [:create]
   resources :reset_passwords, only: [:show, :update]
   resources :invitations, only: [:create]
+
+  mount Sidekiq::Web, at: '/sidekiq', constraints: AdminConstraint.new
 end

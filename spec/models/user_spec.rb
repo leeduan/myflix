@@ -9,6 +9,19 @@ describe User do
   it { should have_many(:following_relationships) }
   it { should have_many(:leading_relationships) }
 
+  describe '#admin?' do
+    let(:admin_user) { Fabricate(:user, admin: true) }
+    let(:other_user) { Fabricate(:user) }
+
+    it 'returns false if user is not admin' do
+      expect(admin_user.admin?).to eq(true)
+    end
+
+    it 'returns true if user is admin' do
+      expect(other_user.admin?).to eq(false)
+    end
+  end
+
   describe '#follow' do
     let(:current_user) { Fabricate(:user) }
     let(:other_user) { Fabricate(:user) }

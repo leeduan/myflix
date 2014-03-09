@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       handle_invitation
-      UserMailer.welcome_email(@user).deliver
+      UserMailer.delay.welcome_email(@user)
       flash[:info] = 'Thank you for joining MyFLiX! Please sign in.'
       redirect_to signin_path
     else

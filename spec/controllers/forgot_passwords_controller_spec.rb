@@ -36,7 +36,7 @@ describe ForgotPasswordsController do
 
       it 'sends an email with the user password token' do
         message = ActionMailer::Base.deliveries.last
-        expect(message.body).to include(user.password_token)
+        expect(message.body).to include(User.last.password_token)
       end
 
       it 'sends the email to the correct person' do
