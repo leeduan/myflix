@@ -14,6 +14,7 @@ gem 'fabrication'
 gem 'faker'
 gem 'sidekiq'
 gem 'unicorn'
+gem 'sinatra', require: false
 
 group :development do
   gem 'sqlite3'
