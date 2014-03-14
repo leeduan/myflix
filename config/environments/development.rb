@@ -10,7 +10,7 @@ Myflix::Application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = {
     host: '10.0.0.11',
-    port: 5000
+    port: 3000
   }
 
   # Print deprecation notices to the Rails logger
