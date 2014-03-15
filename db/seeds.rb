@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user_1 = User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan')
+user_1 = User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan', admin: true)
 user_2 = User.create(email: 'joe@leeduan.com', password: 'password', full_name: 'Joe Smith')
 user_3 = User.create(email: 'john@leeduan.com', password: 'password', full_name: 'John Doe')
 user_4 = User.create(email: 'jolly@leeduan.com', password: 'password', full_name: 'Jolly Babu')
@@ -14,97 +14,85 @@ user_4 = User.create(email: 'jolly@leeduan.com', password: 'password', full_name
 category_1 = Category.create(name: 'TV comedies')
 category_2 = Category.create(name: 'TV Dramas')
 category_3 = Category.create(name: 'Reality TV')
+video_url = 'http://d312nl3mcqlt6j.cloudfront.net/test_video.html'
 
 video_1 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'monk',
-  large_cover_url: 'monk_large',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_2 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'monk',
-  large_cover_url: 'monk_large',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_3 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  small_cover_url: 'south_park',
-  large_cover_url: 'large_placeholder',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_4 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'futurama',
-  large_cover_url: 'large_placeholder',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_5 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  small_cover_url: 'family_guy',
-  large_cover_url: 'large_placeholder',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_6 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  small_cover_url: 'south_park',
-  large_cover_url: 'large_placeholder',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_7 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'futurama',
-  large_cover_url: 'large_placeholder',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_8 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  small_cover_url: 'family_guy',
-  large_cover_url: 'large_placeholder',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_9 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  small_cover_url: 'south_park',
-  large_cover_url: 'large_placeholder',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_10 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  small_cover_url: 'family_guy',
-  large_cover_url: 'large_placeholder',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_11 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'monk',
-  large_cover_url: 'monk_large',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_12 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  small_cover_url: 'family_guy',
-  large_cover_url: 'large_placeholder',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_13 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  small_cover_url: 'monk',
-  large_cover_url: 'monk_large',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 
 Review.create(

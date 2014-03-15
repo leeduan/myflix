@@ -15,6 +15,9 @@ gem 'faker'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'sinatra', require: false
+gem 'carrierwave'
+gem "mini_magick"
+gem "fog"
 
 group :development do
   gem 'sqlite3'

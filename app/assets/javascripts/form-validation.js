@@ -16,7 +16,7 @@
       var validInputs = [],
           validTexts = [],
           self = this,
-          els = this.el.find('input[type="text"], input[type="email"], input[type="password"]'),
+          els = this.el.find('input[type="text"], input[type="email"], input[type="password"], input[type="url"]'),
           textareas = this.el.find('textarea');
       if (els.length > 0) {
         validInputs = $.makeArray(els).map(function(el) {
@@ -35,7 +35,9 @@
       if (attr === 'text' || attr === 'password') {
         valid = this.checkText(el);
       } else if (attr === 'email') {
-        valid = this.checkEmail(el);
+        valid = this.checkEmail(el.value);
+      } else if (attr === 'url') {
+        valid = this.checkUrl(el.value);
       }
       this.renderValidation($(el), !valid, attr);
       return valid;
@@ -48,12 +50,13 @@
     checkText: function(el) {
       return el.value.length > this.blank;
     },
-    checkEmail: function(el) {
-      return this.emailTest(el.value);
-    },
-    emailTest: function(email) {
+    checkEmail: function(email) {
       var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regex.test(email);
+    },
+    checkUrl: function(url) {
+      var regex = /^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/
+      return regex.test(url);
     },
     renderValidation: function (el, invalid, type) {
       el.siblings().remove();
@@ -61,6 +64,8 @@
         el.closest('div.form-group').addClass('has-error');
         if (type === 'email') {
           el.after('<span class="help-block">not a valid email address</span>');
+        } else if (type === 'url') {
+          el.after('<span class="help-block">not a valid url</span>');
         } else if (type === 'text' || type === 'password') {
           el.after('<span class="help-block">can\'t be blank</span>');
         }
