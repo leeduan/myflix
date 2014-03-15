@@ -2,7 +2,7 @@ class Video < ActiveRecord::Base
   belongs_to :category
   has_many :reviews, -> { order('created_at DESC') }
   has_many :queue_items
-  validates_presence_of :title, :description
+  validates_presence_of :title, :description, :url
 
   mount_uploader :small_cover, SmallCoverUploader
   mount_uploader :large_cover, LargeCoverUploader

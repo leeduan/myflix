@@ -14,71 +14,85 @@ user_4 = User.create(email: 'jolly@leeduan.com', password: 'password', full_name
 category_1 = Category.create(name: 'TV comedies')
 category_2 = Category.create(name: 'TV Dramas')
 category_3 = Category.create(name: 'Reality TV')
+video_url = 'http://d312nl3mcqlt6j.cloudfront.net/test_video.html'
 
 video_1 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_2 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_3 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_4 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_5 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_6 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_7 = Video.create(
   title: 'Futurama',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_8 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  category: category_2
+  category: category_2,
+  url: video_url
 )
 video_9 = Video.create(
   title: 'South Park',
   description: 'An American adult animated sitcom created by Trey Parker and Matt Stone for the Comedy Central television network.',
-  category: category_3
+  category: category_3,
+  url: video_url
 )
 video_10 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_11 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_12 = Video.create(
   title: 'Family Guy',
   description: 'An American adult animated sitcom created by Seth MacFarlane for the Fox Broadcasting Company.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 video_13 = Video.create(
   title: 'Monk',
   description: 'An American adult animated science fiction sitcom created by Matt Groening and developed by Groening and David X. Cohen for the Fox Broadcasting Company.',
-  category: category_1
+  category: category_1,
+  url: video_url
 )
 
 Review.create(
