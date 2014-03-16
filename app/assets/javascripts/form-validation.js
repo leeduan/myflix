@@ -8,9 +8,6 @@ ld.myFlixFormValidation = Class.extend({
     this.submitEl = el.find('input[type="submit"]');
     this.blank = 0;
     if (callback) this.callback = callback;
-    this.events();
-  },
-  events: function() {
     this.submitEl.on('click', $.proxy(this.submit, this));
   },
   submit: function(e) {
@@ -33,7 +30,7 @@ ld.myFlixFormValidation = Class.extend({
     }
     if (textareas.length > 0) {
       validTexts = $.makeArray(textareas).map(function(el) {
-        return self.processEachText(el);
+        return self.processEachTextArea(el);
       });
     }
     return validInputs.concat(validTexts).every(function(boolean) { return boolean });
@@ -50,7 +47,7 @@ ld.myFlixFormValidation = Class.extend({
     this.renderValidation($(el), !valid, attr);
     return valid;
   },
-  processEachText: function(el) {
+  processEachTextArea: function(el) {
     valid = this.checkText(el);
     this.renderValidation($(el), !valid);
     return valid;
