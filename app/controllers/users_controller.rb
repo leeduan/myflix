@@ -27,7 +27,9 @@ class UsersController < ApplicationController
       description: "Sign up charge for #{@user.email}"
     )
     if charge.successful?
-      handle_save_new_user
+      handle_invitation
+      handle_create_user
+      redirect_to signin_path
     else
       flash[:danger] = charge.error_message
       render :new
@@ -44,12 +46,10 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :password, :full_name, :invitation_id)
   end
 
-  def handle_save_new_user
+  def handle_create_user
     @user.save
-    handle_invitation
     flash[:info] = 'Thank you for joining MyFLiX! Please sign in.'
     UserMailer.delay.welcome_email(@user)
-    redirect_to signin_path
   end
 
   def handle_invitation
