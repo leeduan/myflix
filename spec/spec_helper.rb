@@ -6,6 +6,8 @@ require 'rspec/autorun'
 require 'capybara/rails'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
+require 'vcr'
+
 Sidekiq::Testing.inline!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -20,6 +22,11 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'vcr/cassettes'
+  config.hook_into :webmock
+end
 
 RSpec.configure do |config|
   # ## Mock Framework
