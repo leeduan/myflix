@@ -16,14 +16,15 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'sinatra', require: false
 gem 'carrierwave'
-gem "mini_magick"
-gem "fog"
+gem 'mini_magick'
+gem 'fog'
+gem 'stripe'
 
 group :development do
   gem 'sqlite3'
   gem 'thin'
-  gem "better_errors"
-  gem "binding_of_caller"
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'letter_opener'
 end
 

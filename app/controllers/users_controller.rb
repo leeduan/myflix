@@ -17,13 +17,26 @@ class UsersController < ApplicationController
   end
 
   def create
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     @user = User.new(user_params)
-    if @user.save
+
+    begin
+      raise Exception.new('Invalid user input') unless @user.save
+      Stripe::Charge.create(
+        amount: 999,
+        currency: 'usd',
+        card: params[:stripeToken],
+        description: "Sign up charge for #{@user.email}"
+      )
       handle_invitation
-      UserMailer.delay.welcome_email(@user)
       flash[:info] = 'Thank you for joining MyFLiX! Please sign in.'
+      UserMailer.delay.welcome_email(@user)
       redirect_to signin_path
-    else
+    rescue Exception => e
+      flash.now[:danger] = e.message
+      render :new
+    rescue Stripe::CardError => e
+      flash.now[:danger] = e.message
       render :new
     end
   end
