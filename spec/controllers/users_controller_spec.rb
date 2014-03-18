@@ -66,7 +66,10 @@ describe UsersController do
     end
 
     context 'with valid input' do
-      before { post :create, user: Fabricate.attributes_for(:user) }
+      before do
+        set_successful_charge
+        post :create, user: Fabricate.attributes_for(:user)
+      end
 
       it 'creates the user' do
         expect(User.count).to eq(1)
@@ -88,6 +91,7 @@ describe UsersController do
         set_current_user
         invitation = Fabricate(:invitation, sender: sender)
         clear_current_user
+        set_successful_charge
         post :create, user: Fabricate.attributes_for(:user, email: invitation.recipient_email, invitation: invitation)
         set_current_user(User.find_by(invitation: invitation))
       end
@@ -107,6 +111,7 @@ describe UsersController do
 
     context 'email sending' do
       let(:user_attributes) { Fabricate.attributes_for(:user) }
+      before { set_successful_charge }
 
       it 'sends out the email with valid inputs' do
         post :create, user: user_attributes
@@ -142,6 +147,33 @@ describe UsersController do
 
       it 'sets @user' do
         expect(assigns(:user)).to be_instance_of(User)
+      end
+
+      it 'renders the new template' do
+        expect(response).to render_template :new
+      end
+    end
+
+    context 'with failed charge' do
+      before do
+        charge = double('charge')
+        allow(charge).to receive(:successful?).and_return(false)
+        allow(charge).to receive(:error_message).and_return('Your card was declined.')
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user)
+      end
+
+      it 'does not create the user' do
+        expect(assigns(:user)).not_to eq(User.first)
+        expect(User.count).to eq(0)
+      end
+
+      it 'sets @user' do
+        expect(assigns(:user)).to be_instance_of(User)
+      end
+
+      it 'sets flash danger if charge is unsuccessful' do
+        expect(flash[:danger]).to be_present
       end
 
       it 'renders the new template' do

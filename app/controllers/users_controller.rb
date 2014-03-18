@@ -27,8 +27,8 @@ class UsersController < ApplicationController
       description: "Sign up charge for #{@user.email}"
     )
     if charge.successful?
-      handle_invitation
       handle_create_user
+      handle_invitation
       redirect_to signin_path
     else
       flash[:danger] = charge.error_message

@@ -39,6 +39,7 @@ feature 'user invites friend signup' do
   def friend_creates_account
     fill_in 'user_password', with: friend_attributes[:password]
     fill_in 'user_full_name', with: friend_attributes[:full_name]
+    set_successful_charge
     click_button 'Sign Up'
   end
 
