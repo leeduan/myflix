@@ -16,25 +16,23 @@ describe StripeWrapper::Charge do
     end
     let(:charge) { StripeWrapper::Charge.create(amount: 100, card: token, description: 'test') }
 
-    context 'with valid card' do
+    context 'with valid card', :vcr do
       let(:card_number) { '4242424242424242' }
 
       it 'charges the card successfully' do
-        expect(VCR.use_cassette('valid credit card charge') { charge }).to be_successful
+        expect(charge).to be_successful
       end
     end
 
-    context 'with invalid card' do
+    context 'with invalid card', :vcr do
       let(:card_number) { '4000000000000002' }
 
-      VCR.use_cassette('stripe_invalid_card') do
-        it 'does not charge the card successfully' do
-          expect(VCR.use_cassette('invalid credit card charge') { charge }).to_not be_successful
-        end
+      it 'does not charge the card successfully' do
+        expect(charge).to_not be_successful
+      end
 
-        it 'contains an error message' do
-          expect(VCR.use_cassette('invalid credit card charge') { charge.error_message }).to eq('Your card was declined.')
-        end
+      it 'contains an error message' do
+        expect(charge.error_message).to eq('Your card was declined.')
       end
     end
   end

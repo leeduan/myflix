@@ -5,7 +5,7 @@ feature 'user invites friend signup' do
   given(:invite_attributes) { Fabricate.attributes_for(:invitation) }
   given(:friend_attributes) { Fabricate.attributes_for(:user, email: invite_attributes[:recipient_email]) }
 
-  scenario 'user successfully invites friend and friend signs up' do
+  scenario 'user successfully invites friend and friend signs up', { js: true, vcr: true } do
     sign_in(sender)
     send_friend_invitation
     sign_out
@@ -37,10 +37,13 @@ feature 'user invites friend signup' do
   end
 
   def friend_creates_account
-    fill_in 'user_password', with: friend_attributes[:password]
-    fill_in 'user_full_name', with: friend_attributes[:full_name]
-    set_successful_charge
-    click_button 'Sign Up'
+      fill_in 'Password', with: friend_attributes[:password]
+      fill_in 'Full Name', with: friend_attributes[:full_name]
+      fill_in 'Credit Card Number', with: '4242424242424242'
+      fill_in 'Security Code', with: '123'
+      select '12 - December', from: 'date_month'
+      select Date.today.year.to_s, from: 'date_year'
+      click_button 'Sign Up'
   end
 
   def friend_signs_in

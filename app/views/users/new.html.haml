@@ -12,18 +12,18 @@
           %h1 Register
         %fieldset
           = f.email_field :email, label: 'Email Address'
-          = f.password_field :password
+          = f.password_field :password, label: 'Password'
           = f.text_field :full_name, label: 'Full Name'
           = f.hidden_field :invitation_id, value: @user.invitation_id
         %fieldset.credit_card
           .form-group
-            %label.control-label.col-sm-2 Credit Card Number
+            %label.control-label.col-sm-2(for='card-number') Credit Card Number
             .col-sm-6
-              %input.form-control(data-stripe="card-number" type="text" maxlength="16")
+              %input.form-control#card-number(data-stripe='card-number' type='text' maxlength='16')
           .form-group
-            %label.control-label.col-sm-2 Security Code
+            %label.control-label.col-sm-2(for='card-cvc') Security Code
             .col-sm-6
-              %input.form-control(data-stripe="card-cvc" type="text" maxlength="4")
+              %input.form-control#card-cvc(data-stripe='card-cvc' type='text' maxlength='4')
           .form-group
             %label.control-label.col-sm-2 Expiration
             .col-sm-3
