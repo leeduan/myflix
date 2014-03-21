@@ -65,7 +65,7 @@ describe UsersController do
       let(:action) { get :new }
     end
 
-    context 'with valid input' do
+    context 'with valid personal info and successful charge' do
       before do
         set_successful_charge
         post :create, user: Fabricate.attributes_for(:user)
@@ -137,7 +137,7 @@ describe UsersController do
       end
     end
 
-    context 'with invalid input' do
+    context 'with invalid personal information' do
       before { post :create, user: { password: 'password' } }
 
       it 'does not create the user' do
@@ -152,13 +152,19 @@ describe UsersController do
       it 'renders the new template' do
         expect(response).to render_template :new
       end
+
+      it 'does not charge the card' do
+        expect(StripeWrapper::Charge).to_not receive(:create)
+      end
     end
 
-    context 'with failed charge' do
+    context 'with valid personal information but failed charge' do
+      let(:error_message) { 'Your card was declined.' }
+
       before do
         charge = double('charge')
         allow(charge).to receive(:successful?).and_return(false)
-        allow(charge).to receive(:error_message).and_return('Your card was declined.')
+        allow(charge).to receive(:error_message).and_return(error_message)
         allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
         post :create, user: Fabricate.attributes_for(:user)
       end
@@ -174,6 +180,7 @@ describe UsersController do
 
       it 'sets flash danger if charge is unsuccessful' do
         expect(flash[:danger]).to be_present
+        expect(flash[:danger]).to eq(error_message)
       end
 
       it 'renders the new template' do
