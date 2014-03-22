@@ -12,14 +12,15 @@ class Video < ActiveRecord::Base
     where("title LIKE ?", "%#{search_term}%").order("created_at DESC")
   end
 
-  def average_rating
-    if reviews.count > 0
-      average = reviews.inject(0.0){|sum, review| sum + review.rating.to_f } / reviews.count
-      average.round(1)
-    end
-  end
-
   def exists_in_queue?(current_user)
     queue_items.any? { |queue_item| queue_item.user == current_user }
+  end
+
+  def average_rating
+    reviews.average('rating').to_f.round(1) if reviews.count > 0
+  end
+
+  def decorator
+    VideoDecorator.new(self)
   end
 end
