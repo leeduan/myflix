@@ -19,8 +19,4 @@ class Video < ActiveRecord::Base
   def average_rating
     reviews.average('rating').to_f.round(1) if reviews.count > 0
   end
-
-  def decorator
-    VideoDecorator.new(self)
-  end
 end
