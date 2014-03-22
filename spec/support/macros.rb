@@ -29,3 +29,9 @@ end
 def click_on_video_on_home_page(video)
   find("a[href='/videos/#{video.id}']").click
 end
+
+def set_successful_charge
+  charge = double('charge')
+  allow(charge).to receive(:successful?).and_return(true)
+  allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+end

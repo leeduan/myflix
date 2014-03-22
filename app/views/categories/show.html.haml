@@ -1,8 +1,8 @@
 %section.genre
   %header.clearfix
     %h1= @category.name
-  %article.row
+  %article.row.video_category
     - @category.videos.each do |video|
-      .video.col-md-2
+      .video.col-sm-2
         = link_to video_path(video) do
           %img(src="#{video.small_cover.thumb}")
