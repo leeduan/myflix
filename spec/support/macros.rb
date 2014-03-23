@@ -31,7 +31,11 @@ def click_on_video_on_home_page(video)
 end
 
 def set_successful_charge
-  charge = double('charge')
-  allow(charge).to receive(:successful?).and_return(true)
+  charge = double(:charge, successful?: true)
+  allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+end
+
+def set_failed_charge
+  charge = double(:charge, successful?: false, error_message: 'Your card was declined.')
   allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
 end
