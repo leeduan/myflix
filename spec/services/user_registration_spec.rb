@@ -45,7 +45,6 @@ describe UserRegistration do
     end
 
     context 'with valid personal information and valid charge' do
-
       before do
         set_successful_charge
         UserRegistration.new(
