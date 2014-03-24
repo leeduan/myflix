@@ -59,20 +59,19 @@ describe UsersController do
   end
 
   describe 'POST create' do
-    after { ActionMailer::Base.deliveries.clear }
-
     it_behaves_like 'redirect home current user' do
       let(:action) { get :new }
     end
 
-    context 'with valid personal info and successful charge' do
+    context 'successful user registration' do
       before do
-        set_successful_charge
+        result = double(:registration_result, successful?: true)
+        allow_any_instance_of(UserRegistration).to receive(:register).and_return(result)
         post :create, user: Fabricate.attributes_for(:user)
       end
 
-      it 'creates the user' do
-        expect(User.count).to eq(1)
+      it 'sets @user' do
+        expect(assigns(:user)).to be_instance_of(User)
       end
 
       it 'shows flash info message' do
@@ -84,101 +83,20 @@ describe UsersController do
       end
     end
 
-    context 'with invitation' do
-      let(:sender) { current_user }
+    context 'failed user registration' do
+      let(:error_message) { 'Your card was declined.'}
 
       before do
-        set_current_user
-        invitation = Fabricate(:invitation, sender: sender)
-        clear_current_user
-        set_successful_charge
-        post :create, user: Fabricate.attributes_for(:user, email: invitation.recipient_email, invitation: invitation)
-        set_current_user(User.find_by(invitation: invitation))
-      end
-
-      it 'makes the user follow the sender' do
-        expect(current_user.follows?(sender)).to eq(true)
-      end
-
-      it 'makes the inviter follow the user' do
-        expect(sender.follows?(current_user)).to eq(true)
-      end
-
-      it 'expires the invitation upon creation of user' do
-        expect(Invitation.first.token).to eq(nil)
-      end
-    end
-
-    context 'email sending' do
-      let(:user_attributes) { Fabricate.attributes_for(:user) }
-      before { set_successful_charge }
-
-      it 'sends out the email with valid inputs' do
-        post :create, user: user_attributes
-        expect(ActionMailer::Base.deliveries).to_not be_empty
-      end
-
-      it 'sends out the email to the right recipient with valid inputs' do
-        post :create, user: user_attributes
-        message = ActionMailer::Base.deliveries.last
-        expect(message.to).to eq([user_attributes[:email]])
-      end
-
-      it 'sends the email containing the user name with valid inputs' do
-        post :create, user: user_attributes
-        message = ActionMailer::Base.deliveries.last
-        expect(message.body).to include(user_attributes[:full_name])
-      end
-
-      it 'does not send out email with invalid inputs' do
-        post :create, user: { email: 'invalid@example.com' }
-        message = ActionMailer::Base.deliveries
-        expect(message).to eq([])
-      end
-    end
-
-    context 'with invalid personal information' do
-      before { post :create, user: { password: 'password' } }
-
-      it 'does not create the user' do
-        expect(assigns(:user)).not_to eq(User.first)
-        expect(User.count).to eq(0)
+        result = double(:registration_result, successful?: false, error_message: error_message)
+        allow_any_instance_of(UserRegistration).to receive(:register).and_return(result)
+        post :create, user: { password: 'password' }
       end
 
       it 'sets @user' do
         expect(assigns(:user)).to be_instance_of(User)
       end
 
-      it 'renders the new template' do
-        expect(response).to render_template :new
-      end
-
-      it 'does not charge the card' do
-        expect(StripeWrapper::Charge).to_not receive(:create)
-      end
-    end
-
-    context 'with valid personal information but failed charge' do
-      let(:error_message) { 'Your card was declined.' }
-
-      before do
-        charge = double('charge')
-        allow(charge).to receive(:successful?).and_return(false)
-        allow(charge).to receive(:error_message).and_return(error_message)
-        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
-        post :create, user: Fabricate.attributes_for(:user)
-      end
-
-      it 'does not create the user' do
-        expect(assigns(:user)).not_to eq(User.first)
-        expect(User.count).to eq(0)
-      end
-
-      it 'sets @user' do
-        expect(assigns(:user)).to be_instance_of(User)
-      end
-
-      it 'sets flash danger if charge is unsuccessful' do
+      it 'shows flash danger message' do
         expect(flash[:danger]).to be_present
         expect(flash[:danger]).to eq(error_message)
       end
