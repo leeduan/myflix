@@ -3,20 +3,38 @@ require 'spec_helper'
 describe UserRegistration do
   after { ActionMailer::Base.deliveries.clear }
 
+  def set_successful_charge
+    charge = double(:charge, successful?: true)
+    allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+  end
+
+  def set_failed_charge
+    charge = double(:charge, successful?: false, error_message: 'Your card was declined.')
+    allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+  end
+
+  def invalid_user_information_registration
+    UserRegistration.new(Fabricate.build(:user, password: '')).register('stripe_token', '')
+  end
+
+  def valid_user_information_registration
+    UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+  end
+
   describe '#register' do
     context 'with invalid personal information' do
       it 'does not create the user' do
-        UserRegistration.new(Fabricate.build(:user, password: '')).register('stripe_token', '')
+        invalid_user_information_registration
         expect(User.count).to eq(0)
       end
 
       it 'does not charge the card' do
         expect(StripeWrapper::Charge).to_not receive(:create)
-        UserRegistration.new(Fabricate.build(:user, password: '')).register('stripe_token', '')
+        invalid_user_information_registration
       end
 
       it 'does not send out email with invalid inputs' do
-        UserRegistration.new(Fabricate.build(:user, password: '')).register('stripe_token', '')
+        invalid_user_information_registration
         message = ActionMailer::Base.deliveries
         expect(message).to eq([])
       end
@@ -25,20 +43,20 @@ describe UserRegistration do
     context 'with valid personal information but failed charge' do
       it 'does not create the user' do
         set_failed_charge
-        UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+        valid_user_information_registration
         expect(User.count).to eq(0)
       end
 
       it 'does not charge the card' do
         expect(StripeWrapper::Charge).to receive(:create)
         set_failed_charge
-        result = UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+        result = valid_user_information_registration
         expect(result.error_message).to be_present
       end
 
       it 'does not send out email with invalid inputs' do
         set_failed_charge
-        UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+        valid_user_information_registration
         message = ActionMailer::Base.deliveries
         expect(message).to eq([])
       end
@@ -95,31 +113,29 @@ describe UserRegistration do
       let(:user) { Fabricate(:user) }
       let(:invitation) { Fabricate(:invitation, sender: user) }
 
-      it 'does receive handle_invitation' do
-        expect_any_instance_of(UserRegistration).to receive(:handle_invitation)
+      def valid_user_registration_with_invitation
         set_successful_charge
         UserRegistration.new(Fabricate.build(:user, email: invitation.recipient_email, invitation: invitation))
           .register('stripe_token', invitation.id)
       end
 
+      it 'does receive handle_invitation' do
+        expect_any_instance_of(UserRegistration).to receive(:handle_invitation)
+        valid_user_registration_with_invitation
+      end
+
       it 'makes the user follow the sender' do
-        set_successful_charge
-        UserRegistration.new(Fabricate.build(:user, email: invitation.recipient_email, invitation: invitation))
-          .register('stripe_token', invitation.id)
+        valid_user_registration_with_invitation
         expect(User.last.follows?(User.first)).to eq(true)
       end
 
       it 'makes the inviter follow the user' do
-        set_successful_charge
-        UserRegistration.new(Fabricate.build(:user, email: invitation.recipient_email, invitation: invitation))
-          .register('stripe_token', invitation.id)
+        valid_user_registration_with_invitation
         expect(User.first.follows?(User.last)).to eq(true)
       end
 
       it 'expires the invitation upon creation of user' do
-        set_successful_charge
-        UserRegistration.new(Fabricate.build(:user, email: invitation.recipient_email, invitation: invitation))
-          .register('stripe_token', invitation.id)
+        valid_user_registration_with_invitation
         expect(Invitation.first.token).to eq(nil)
       end
     end
@@ -129,7 +145,7 @@ describe UserRegistration do
     context 'with invalid personal information' do
       it 'returns false' do
         set_successful_charge
-        result = UserRegistration.new(Fabricate.build(:user, password: '')).register('stripe_token', '')
+        result = invalid_user_information_registration
         expect(result.successful?).to eq(false)
       end
     end
@@ -137,7 +153,7 @@ describe UserRegistration do
     context 'with valid personal information but failed charge' do
       it 'returns false' do
         set_failed_charge
-        result = UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+        result = valid_user_information_registration
         expect(result.successful?).to eq(false)
       end
     end
@@ -145,7 +161,7 @@ describe UserRegistration do
     context 'with valid personal information and valid charge' do
       it 'returns true' do
         set_successful_charge
-        result = UserRegistration.new(Fabricate.build(:user)).register('stripe_token', '')
+        result = valid_user_information_registration
         expect(result.successful?).to eq(true)
       end
     end
