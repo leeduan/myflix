@@ -3,27 +3,26 @@ module StripeWrapper
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
   end
 
-  class Charge
-    attr_reader :response, :status
+  class Customer
+    attr_reader :customer, :status
+    attr_accessor :subscription, :error
 
     def self.create(options={})
       StripeWrapper.set_api_key
       begin
-        response = Stripe::Charge.create(
-          amount: options[:amount],
-          currency: 'usd',
-          card: options[:card],
-          description: options[:description]
-        )
-        new(response, :success)
+        customer = Stripe::Customer.create(card: options[:card])
+        subscription = customer.subscriptions.create(plan: ENV['STRIPE_SUBSCRIPTION_PLAN'])
+        new(customer: customer, subscription: subscription, status: :success)
       rescue Stripe::CardError => e
-        new(e, :error)
+        new(status: :error, error: e)
       end
     end
 
-    def initialize(response, status)
-      @response = response
-      @status = status
+    def initialize(options={})
+      @customer = options[:customer]
+      @subscription = options[:subscription]
+      @status = options[:status]
+      @error = options[:error]
     end
 
     def successful?
@@ -31,7 +30,7 @@ module StripeWrapper
     end
 
     def error_message
-      response.message
+      error.message
     end
   end
 end

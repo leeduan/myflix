@@ -4,13 +4,14 @@ describe UserRegistration do
   after { ActionMailer::Base.deliveries.clear }
 
   def set_successful_charge
-    charge = double(:charge, successful?: true)
-    allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+    subscription = double(:subscription, id: 'random_hash_id')
+    customer = double(:customer, successful?: true, subscription: subscription)
+    allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
   end
 
   def set_failed_charge
-    charge = double(:charge, successful?: false, error_message: 'Your card was declined.')
-    allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+    customer = double(:customer, successful?: false, error_message: 'Your card was declined.')
+    allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
   end
 
   def invalid_user_information_registration
@@ -29,7 +30,7 @@ describe UserRegistration do
       end
 
       it 'does not charge the card' do
-        expect(StripeWrapper::Charge).to_not receive(:create)
+        expect(StripeWrapper::Customer).to_not receive(:create)
         invalid_user_information_registration
       end
 
@@ -48,7 +49,7 @@ describe UserRegistration do
       end
 
       it 'does not charge the card' do
-        expect(StripeWrapper::Charge).to receive(:create)
+        expect(StripeWrapper::Customer).to receive(:create)
         set_failed_charge
         result = valid_user_information_registration
         expect(result.error_message).to be_present
@@ -72,6 +73,10 @@ describe UserRegistration do
 
       it 'creates the user' do
         expect(User.count).to eq(1)
+      end
+
+      it 'sets the user stripe_id with stripe subscription id' do
+        expect(User.first.stripe_id).to be_present
       end
 
       it 'sends out the email with valid inputs' do
