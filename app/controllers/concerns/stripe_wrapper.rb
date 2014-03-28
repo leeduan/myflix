@@ -4,8 +4,7 @@ module StripeWrapper
   end
 
   class Customer
-    attr_reader :customer, :status
-    attr_accessor :subscription, :error
+    attr_reader :customer, :subscription, :status, :error
 
     def self.create(options={})
       StripeWrapper.set_api_key
