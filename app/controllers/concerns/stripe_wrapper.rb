@@ -4,14 +4,17 @@ module StripeWrapper
   end
 
   class Customer
-    attr_reader :customer, :subscription, :status, :error
+    attr_reader :customer, :status, :error
 
     def self.create(options={})
       StripeWrapper.set_api_key
       begin
-        customer = Stripe::Customer.create(card: options[:card])
-        subscription = customer.subscriptions.create(plan: ENV['STRIPE_SUBSCRIPTION_PLAN'])
-        new(customer: customer, subscription: subscription, status: :success)
+        customer = Stripe::Customer.create(
+          email: options[:user].email,
+          card: options[:card],
+          plan: ENV['STRIPE_SUBSCRIPTION_PLAN']
+        )
+        new(customer: customer, status: :success)
       rescue Stripe::CardError => e
         new(status: :error, error: e)
       end
@@ -26,6 +29,10 @@ module StripeWrapper
 
     def successful?
       status == :success
+    end
+
+    def id
+      customer && customer[:id]
     end
 
     def error_message

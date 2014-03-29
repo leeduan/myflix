@@ -4,8 +4,7 @@ describe UserRegistration do
   after { ActionMailer::Base.deliveries.clear }
 
   def set_successful_charge
-    subscription = double(:subscription, id: 'random_hash_id')
-    customer = double(:customer, successful?: true, subscription: subscription)
+    customer = double(:customer, successful?: true, id: 'random-hash-id')
     allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
   end
 
@@ -75,7 +74,7 @@ describe UserRegistration do
         expect(User.count).to eq(1)
       end
 
-      it 'sets the user stripe_id with stripe subscription id' do
+      it 'sets the user stripe_id with stripe customer id' do
         expect(User.first.stripe_id).to be_present
       end
 

@@ -14,17 +14,18 @@ describe StripeWrapper::Customer do
         }
       ).id
     end
-    let(:customer) { StripeWrapper::Customer.create(card: token_id) }
+    let(:user) { Fabricate.build(:user) }
+    let(:customer) { StripeWrapper::Customer.create(card: token_id, user: user) }
 
     context 'with valid card', :vcr do
       let(:card_number) { '4242424242424242' }
 
       it 'creates a customer' do
-        expect(customer.customer).to be_present
+        expect(customer).to be_successful
       end
 
-      it 'creates a subscription' do
-        expect(customer.subscription).to be_present
+      it 'sets the customer id' do
+        expect(customer.id).to be_present
       end
 
       it 'sets status of successful' do
@@ -36,11 +37,11 @@ describe StripeWrapper::Customer do
       let(:card_number) { '4000000000000002' }
 
       it 'does not create a customer' do
-        expect(customer.customer).to_not be_present
+        expect(customer).to_not be_successful
       end
 
-      it 'does not create a subscription' do
-        expect(customer.subscription).to_not be_present
+      it 'does not set the customer id' do
+        expect(customer.id).to_not be_present
       end
 
       it 'sets status of not successful' do
