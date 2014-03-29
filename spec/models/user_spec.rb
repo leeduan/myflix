@@ -8,6 +8,7 @@ describe User do
   it { should have_many(:queue_items).order('list_order') }
   it { should have_many(:following_relationships) }
   it { should have_many(:leading_relationships) }
+  it { should have_many(:payments) }
 
   describe '#admin?' do
     let(:admin_user) { Fabricate(:user, admin: true) }

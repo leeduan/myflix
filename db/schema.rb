@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327033001) do
+ActiveRecord::Schema.define(version: 20140329040239) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20140327033001) do
     t.string   "recipient_name"
     t.string   "recipient_email"
     t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "payments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "amount"
+    t.string   "reference_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
