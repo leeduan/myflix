@@ -1,13 +1,8 @@
 module StripeWrapper
-  def self.set_api_key
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-  end
-
   class Customer
     attr_reader :customer, :status, :error
 
     def self.create(options={})
-      StripeWrapper.set_api_key
       begin
         customer = Stripe::Customer.create(
           email: options[:user].email,
@@ -31,12 +26,20 @@ module StripeWrapper
       status == :success
     end
 
-    def id
-      customer && customer[:id]
+    def stripe_id
+      customer[:id] if customer
     end
 
     def error_message
       error.message
+    end
+  end
+
+  class Payment
+    def call(event)
+      charge = event.data.object
+      user = User.find_by(stripe_id: charge.customer)
+      user.payments.create(user: user, amount: charge.amount, reference_id: charge.id)
     end
   end
 end

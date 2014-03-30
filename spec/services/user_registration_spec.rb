@@ -4,7 +4,7 @@ describe UserRegistration do
   after { ActionMailer::Base.deliveries.clear }
 
   def set_successful_charge
-    customer = double(:customer, successful?: true, id: 'random-hash-id')
+    customer = double(:customer, successful?: true, stripe_id: 'random-hash-id')
     allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
   end
 

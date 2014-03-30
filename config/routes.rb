@@ -37,5 +37,5 @@ Myflix::Application.routes.draw do
   end
 
   mount Sidekiq::Web, at: '/sidekiq', constraints: AdminConstraint.new
-  # mount StripeEvent::Engine => '/stripe-charge'
+  mount StripeEvent::Engine, at: '/stripe-events'
 end

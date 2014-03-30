@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe StripeWrapper::Customer do
-  before { StripeWrapper.set_api_key }
-
   describe '.create' do
     let(:token_id) do
       Stripe::Token.create(
@@ -25,7 +23,7 @@ describe StripeWrapper::Customer do
       end
 
       it 'sets the customer id' do
-        expect(customer.id).to be_present
+        expect(customer.stripe_id).to be_present
       end
 
       it 'sets status of successful' do
@@ -41,7 +39,7 @@ describe StripeWrapper::Customer do
       end
 
       it 'does not set the customer id' do
-        expect(customer.id).to_not be_present
+        expect(customer.stripe_id).to_not be_present
       end
 
       it 'sets status of not successful' do

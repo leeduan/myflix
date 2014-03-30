@@ -9,7 +9,7 @@ class UserRegistration
     if user.valid?
       customer = StripeWrapper::Customer.create(card: stripe_token, user: user)
       if customer.successful?
-        user.stripe_id = customer.id
+        user.stripe_id = customer.stripe_id
         user.save
         UserMailer.delay.welcome_email(user)
         handle_invitation(Invitation.find(invitation_token)) if invitation_token.present?
