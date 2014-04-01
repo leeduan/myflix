@@ -1,5 +1,5 @@
 Fabricator(:payment) do
   user
-  amount 9.99
+  amount 999
   reference_id { Faker::Number.number(15) }
 end
