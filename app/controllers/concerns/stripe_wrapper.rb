@@ -39,7 +39,12 @@ module StripeWrapper
     def call(event)
       charge = event.data.object
       user = User.find_by(stripe_id: charge.customer)
-      user.payments.create(user: user, amount: charge.amount, reference_id: charge.id)
+
+      if event.type == 'charge.succeeded'
+        user.payments.create(user: user, amount: charge.amount, reference_id: charge.id)
+      elsif event.type == 'charge.failed'
+        user.update_columns(suspended: true)
+      end
     end
   end
 end

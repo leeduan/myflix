@@ -50,8 +50,7 @@ describe 'Create payment on successful charge' do
           invoice: "in_103l6B2ZsJylVlgJYKDW8Fqz",
           description: nil,
           dispute: nil,
-          metadata: {
-          },
+          metadata: {},
           statement_description: "Monthly MyFLiX"
         }
       },
@@ -77,5 +76,69 @@ describe 'Create payment on successful charge' do
 
   it 'creates the payment with the reference id', :vcr do
     expect(Payment.first.reference_id).to eq('ch_103l6B2ZsJylVlgJNBMBQrfm')
+  end
+end
+
+describe 'Locks account on payment failure' do
+  let(:event_data) do
+    {
+      id: "evt_103lrU2ZsJylVlgJEZZa7SwV",
+      created: 1396327505,
+      livemode: false,
+      type: "charge.failed",
+      object: "event",
+      request: nil,
+      data: {
+        object: {
+          id: "ch_103lrU2ZsJylVlgJcqNMCnvF",
+          object: "charge",
+          created: 1396327505,
+          livemode: false,
+          paid: false,
+          amount: 999,
+          currency: "usd",
+          refunded: false,
+          card: {
+            id: "card_103lrU2ZsJylVlgJBRtd5fO2",
+            object: "card",
+            last4: "0341",
+            type: "Visa",
+            exp_month: 3,
+            exp_year: 2015,
+            fingerprint: "9TswyKvBpXvO4ZB0",
+            customer: "cus_3lqTIcE69RVoB9",
+            country: "US",
+            name: nil,
+            address_line1: nil,
+            address_line2: nil,
+            address_city: nil,
+            address_state: nil,
+            address_zip: nil,
+            address_country: nil,
+            cvc_check: "pass",
+            address_line1_check: nil,
+            address_zip_check: nil
+          },
+          captured: false,
+          refunds: nil,
+          balance_transaction: nil,
+          failure_message: "Your card was declined.",
+          failure_code: "card_declined",
+          amount_refunded: 0,
+          customer: "cus_3lqTIcE69RVoB9",
+          invoice: nil,
+          description: "",
+          dispute: nil,
+          metadata: {},
+          statement_description: "Monthly MyFLiX"
+        }
+      }
+    }
+  end
+  let!(:user) { Fabricate(:user, stripe_id: "cus_3lqTIcE69RVoB9") }
+  before { post 'stripe-events', event_data }
+
+  it 'sets the user account to suspended', :vcr do
+    expect(User.first.suspended).to eq(true)
   end
 end

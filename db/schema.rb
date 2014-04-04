@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140329040239) do
+ActiveRecord::Schema.define(version: 20140401042832) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20140329040239) do
     t.integer  "invitation_id"
     t.boolean  "admin"
     t.string   "stripe_id"
+    t.boolean  "suspended"
   end
 
   create_table "videos", force: true do |t|
