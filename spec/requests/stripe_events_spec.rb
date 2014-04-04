@@ -79,7 +79,7 @@ describe 'Create payment on successful charge' do
   end
 end
 
-describe 'Locks account on payment failure' do
+describe 'Sets the account to suspended on failed payment web hook' do
   let(:event_data) do
     {
       id: "evt_103lrU2ZsJylVlgJEZZa7SwV",
@@ -137,8 +137,14 @@ describe 'Locks account on payment failure' do
   end
   let!(:user) { Fabricate(:user, stripe_id: "cus_3lqTIcE69RVoB9") }
   before { post 'stripe-events', event_data }
+  after { ActionMailer::Base.deliveries.clear }
 
   it 'sets the user account to suspended', :vcr do
     expect(User.first.suspended).to eq(true)
+  end
+
+  it 'sends the user a suspended account email', :vcr do
+    expect(ActionMailer::Base.deliveries.count).to eq(1)
+    expect(ActionMailer::Base.deliveries.first.subject).to eq('MyFLiX Account Suspended')
   end
 end

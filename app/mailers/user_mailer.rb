@@ -15,4 +15,9 @@ class UserMailer < ActionMailer::Base
     @invitation = invitation
     mail to: @invitation.recipient_email, subject: 'Invite to join MyFLiX'
   end
+
+  def suspended_account(user)
+    @user = user
+    mail to: @user.email, subject: 'MyFLiX Account Suspended'
+  end
 end

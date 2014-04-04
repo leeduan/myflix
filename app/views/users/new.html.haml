@@ -7,7 +7,7 @@
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
-      = bootstrap_form_for @user, style: :horizontal, left: 'col-sm-2', right: 'col-sm-6', html: { 'data-stripe-form' => true } do |f|
+      = bootstrap_form_for @user, layout: :horizontal, label_col: 'col-sm-2', right: 'control_col', html: { 'data-stripe-form' => true } do |f|
         %header
           %h1 Register
         %fieldset

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SessionsController do
-  before { set_current_user }
 
   describe 'GET new' do
+    before { set_current_user }
     it 'redirects user to home if signed in' do
       get :new
       expect(response).to redirect_to home_path
@@ -18,7 +18,10 @@ describe SessionsController do
 
   describe 'POST create' do
     context 'params valid' do
-      before { post :create, email: current_user.email, password: 'password' }
+      before do
+        set_current_user
+        post :create, email: current_user.email, password: 'password'
+      end
 
       it 'sets user session' do
         expect(session[:user_id]).to eq(current_user.id)
@@ -37,16 +40,34 @@ describe SessionsController do
       before { post :create }
 
       it 'does not set session' do
-        clear_current_user
         expect(session[:user_id]).to be_nil
       end
 
-      it 'sets the error notice' do
+      it 'sets the danger notice' do
         expect(flash[:danger]).to_not be_blank
       end
 
       it 'redirects to signin' do
         expect(response).to redirect_to signin_path
+      end
+    end
+
+    context 'suspended user' do
+      before do
+        user = Fabricate(:user, password: 'password', suspended: true)
+        post :create, email: user.email, password: 'password'
+      end
+
+      it 'does not set session' do
+        expect(session[:user_id]).to be_nil
+      end
+
+      it 'sets the danger notice' do
+        expect(flash[:danger]).to be_present
+      end
+
+      it 'redirects to front path' do
+        expect(response).to redirect_to front_path
       end
     end
   end

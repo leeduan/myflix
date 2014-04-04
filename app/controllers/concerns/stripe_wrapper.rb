@@ -44,6 +44,7 @@ module StripeWrapper
         user.payments.create(user: user, amount: charge.amount, reference_id: charge.id)
       elsif event.type == 'charge.failed'
         user.update_columns(suspended: true)
+        UserMailer.delay.suspended_account(user)
       end
     end
   end
