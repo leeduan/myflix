@@ -18,6 +18,6 @@ class UserMailer < ActionMailer::Base
 
   def suspended_account(user)
     @user = user
-    mail to: @user.email, subject: 'MyFLiX Account Suspended'
+    mail to: @user.email, subject: 'MyFLiX Account Deactivated'
   end
 end
