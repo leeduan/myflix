@@ -60,7 +60,7 @@ describe UsersController do
 
   describe 'POST create' do
     it_behaves_like 'redirect home current user' do
-      let(:action) { get :new }
+      let(:action) { post :create, user: Fabricate.attributes_for(:user) }
     end
 
     context 'successful user registration' do
@@ -123,6 +123,47 @@ describe UsersController do
     it 'renders the show template' do
       get :show, id: 1
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'GET edit' do
+    before { set_current_user }
+
+    it_behaves_like 'require signin' do
+      let(:action) { get :edit, id: 1 }
+    end
+
+    it 'sets @user' do
+      get :edit, id: current_user.id
+      expect(assigns(:user)).to eq(current_user)
+    end
+
+    it 'renders the edit template' do
+      get :edit, id: current_user.id
+      expect(response).to render_template :edit
+    end
+  end
+
+  describe 'PATCH update' do
+    before { set_current_user }
+
+    it_behaves_like 'require signin' do
+      let(:action) { post :update, id: 1, user: Fabricate.attributes_for(:user) }
+    end
+
+    context 'valid input' do
+      before { post :update, id: current_user.id, user: Fabricate.attributes_for(:user, password: 'password', password_confirmation: 'password') }
+      it 'displays a sign-in message' do
+        expect(flash[:info]).to be_present
+      end
+
+      it 'redirects the user to home path' do
+        expect(response).to redirect_to home_path
+      end
+    end
+
+    context 'invalid input' do
+
     end
   end
 end

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   belongs_to :invitation
 
   validates_presence_of :full_name
+  validates_confirmation_of :password
   validates :email, presence: true, uniqueness: { case_sensitive: true }
   validates :password, presence: true, on: :create
   has_secure_password validations: false
