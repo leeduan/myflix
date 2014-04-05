@@ -145,6 +145,6 @@ describe 'Sets the account to suspended on failed payment web hook' do
 
   it 'sends the user a suspended account email', :vcr do
     expect(ActionMailer::Base.deliveries.count).to eq(1)
-    expect(ActionMailer::Base.deliveries.first.subject).to eq('MyFLiX Account Suspended')
+    expect(ActionMailer::Base.deliveries.first.subject).to eq('MyFLiX Account Deactivated')
   end
 end
