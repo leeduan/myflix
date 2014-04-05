@@ -19,3 +19,6 @@
 
 # Ignore temporary images created by tests.
 /public/uploads/*
+
+# OS system files
+.DS_Store

@@ -1,37 +1,51 @@
 module StripeWrapper
-  def self.set_api_key
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-  end
-
-  class Charge
-    attr_reader :response, :status
+  class Customer
+    attr_reader :customer, :status, :error
 
     def self.create(options={})
-      StripeWrapper.set_api_key
       begin
-        response = Stripe::Charge.create(
-          amount: options[:amount],
-          currency: 'usd',
+        customer = Stripe::Customer.create(
+          email: options[:user].email,
           card: options[:card],
-          description: options[:description]
+          plan: ENV['STRIPE_SUBSCRIPTION_PLAN']
         )
-        new(response, :success)
+        new(customer: customer, status: :success)
       rescue Stripe::CardError => e
-        new(e, :error)
+        new(status: :error, error: e)
       end
     end
 
-    def initialize(response, status)
-      @response = response
-      @status = status
+    def initialize(options={})
+      @customer = options[:customer]
+      @subscription = options[:subscription]
+      @status = options[:status]
+      @error = options[:error]
     end
 
     def successful?
       status == :success
     end
 
+    def stripe_id
+      customer[:id] if customer
+    end
+
     def error_message
-      response.message
+      error.message
+    end
+  end
+
+  class Payment
+    def call(event)
+      charge = event.data.object
+      user = User.find_by(stripe_id: charge.customer)
+
+      if event.type == 'charge.succeeded'
+        user.payments.create(user: user, amount: charge.amount, reference_id: charge.id)
+      elsif event.type == 'charge.failed'
+        user.update_columns(suspended: true)
+        UserMailer.delay.suspended_account(user)
+      end
     end
   end
 end

@@ -1,10 +1,8 @@
 require 'spec_helper'
 
-describe StripeWrapper::Charge do
-  before { StripeWrapper.set_api_key }
-
+describe StripeWrapper::Customer do
   describe '.create' do
-    let(:token) do
+    let(:token_id) do
       Stripe::Token.create(
         card: {
           number: card_number,
@@ -14,25 +12,42 @@ describe StripeWrapper::Charge do
         }
       ).id
     end
-    let(:charge) { StripeWrapper::Charge.create(amount: 100, card: token, description: 'test') }
+    let(:user) { Fabricate.build(:user) }
+    let(:customer) { StripeWrapper::Customer.create(card: token_id, user: user) }
 
     context 'with valid card', :vcr do
       let(:card_number) { '4242424242424242' }
 
-      it 'charges the card successfully' do
-        expect(charge).to be_successful
+      it 'creates a customer' do
+        expect(customer).to be_successful
+      end
+
+      it 'sets the customer id' do
+        expect(customer.stripe_id).to be_present
+      end
+
+      it 'sets status of successful' do
+        expect(customer.successful?).to eq(true)
       end
     end
 
     context 'with invalid card', :vcr do
       let(:card_number) { '4000000000000002' }
 
-      it 'does not charge the card successfully' do
-        expect(charge).to_not be_successful
+      it 'does not create a customer' do
+        expect(customer).to_not be_successful
       end
 
-      it 'contains an error message' do
-        expect(charge.error_message).to eq('Your card was declined.')
+      it 'does not set the customer id' do
+        expect(customer.stripe_id).to_not be_present
+      end
+
+      it 'sets status of not successful' do
+        expect(customer.successful?).to eq(false)
+      end
+
+      it 'has an error message' do
+        expect(customer.error_message).to be_present
       end
     end
   end

@@ -6,9 +6,14 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      flash[:info] = 'You are signed in, enjoy!'
-      redirect_to home_path
+      if user.suspended?
+        flash[:danger] = 'Sorry, your account has been suspended. Please contact customer service.'
+        redirect_to front_path
+      else
+        session[:user_id] = user.id
+        flash[:info] = 'You are signed in, enjoy!'
+        redirect_to home_path
+      end
     else
       flash[:danger] = 'Invalid email or password.'
       redirect_to signin_path

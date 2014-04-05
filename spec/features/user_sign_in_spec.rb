@@ -1,11 +1,17 @@
 require 'spec_helper'
 
 feature 'user signs in' do
-  given(:user) { User.create(email: 'hello@leeduan.com', password: 'password', full_name: 'Lee Duan') }
-
-  scenario 'with valid credentials' do
+    scenario 'with valid credentials' do
+    user = Fabricate(:user)
     sign_in(user)
     expect(page).to have_content user.full_name
+  end
+
+  scenario 'with suspended user' do
+    user = Fabricate(:user, suspended: true)
+    sign_in(user)
+    expect(page).to have_content('Unlimited Movies for Only 9.99')
+    expect(page).to have_content('Sorry, your account has been suspended.')
   end
 
   scenario 'with invalid credentials' do

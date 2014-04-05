@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
   has_many :leading_relationships, class_name: "Relationship", foreign_key: :leader_id
   has_many :sent_invitations, class_name: 'Invitation', foreign_key: :sender_id
+  has_many :payments
   belongs_to :invitation
 
   validates_presence_of :full_name

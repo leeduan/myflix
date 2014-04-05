@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: card[number]=4242424242424242&card[exp_month]=4&card[exp_year]=2015&card[cvc]=314
+      string: card[number]=4000000000000002&card[exp_month]=4&card[exp_year]=2015&card[cvc]=314
     headers:
       Accept:
       - '*/*; q=0.5, application/xml'
@@ -31,19 +31,19 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 20 Mar 2014 03:42:58 GMT
+      - Fri, 28 Mar 2014 04:27:17 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
       - '570'
       Connection:
       - keep-alive
-      Access-Control-Max-Age:
-      - '300'
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Methods:
       - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Max-Age:
+      - '300'
       Cache-Control:
       - no-cache, no-store
       Strict-Transport-Security:
@@ -52,20 +52,20 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_103hLm2ZsJylVlgJArfJZyvQ",
+          "id": "tok_103kMI2ZsJylVlgJUg3hXTbv",
           "livemode": false,
-          "created": 1395286978,
+          "created": 1395980837,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_103hLm2ZsJylVlgJdzhffozq",
+            "id": "card_103kMI2ZsJylVlgJBgSkaRQu",
             "object": "card",
-            "last4": "4242",
+            "last4": "0002",
             "type": "Visa",
             "exp_month": 4,
             "exp_year": 2015,
-            "fingerprint": "kiMCSaHezC1MyJis",
+            "fingerprint": "N75JAI7fwAGme4a6",
             "customer": null,
             "country": "US",
             "name": null,
@@ -78,13 +78,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 20 Mar 2014 03:43:01 GMT
+  recorded_at: Fri, 28 Mar 2014 04:27:19 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/charges
+    uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: amount=100&currency=usd&card=tok_103hLm2ZsJylVlgJArfJZyvQ&description=test
+      string: card=tok_103kMI2ZsJylVlgJUg3hXTbv
     headers:
       Accept:
       - '*/*; q=0.5, application/xml'
@@ -101,78 +101,40 @@ http_interactions:
         leeduan-VirtualBox 3.8.0-37-generic #53~precise1-Ubuntu SMP Wed Feb 19 21:37:54
         UTC 2014 x86_64 x86_64 x86_64 GNU/Linux"}'
       Content-Length:
-      - '74'
+      - '33'
   response:
     status:
-      code: 200
-      message: OK
+      code: 402
+      message: Payment Required
     headers:
       Server:
       - nginx
       Date:
-      - Thu, 20 Mar 2014 03:42:59 GMT
+      - Fri, 28 Mar 2014 04:27:17 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '1002'
+      - '117'
       Connection:
       - keep-alive
-      Cache-Control:
-      - no-cache, no-store
       Access-Control-Allow-Credentials:
       - 'true'
-      Access-Control-Max-Age:
-      - '300'
       Access-Control-Allow-Methods:
       - GET, POST, HEAD, OPTIONS, DELETE
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_103hLm2ZsJylVlgJV4xgscFH",
-          "object": "charge",
-          "created": 1395286979,
-          "livemode": false,
-          "paid": true,
-          "amount": 100,
-          "currency": "usd",
-          "refunded": false,
-          "card": {
-            "id": "card_103hLm2ZsJylVlgJdzhffozq",
-            "object": "card",
-            "last4": "4242",
-            "type": "Visa",
-            "exp_month": 4,
-            "exp_year": 2015,
-            "fingerprint": "kiMCSaHezC1MyJis",
-            "customer": null,
-            "country": "US",
-            "name": null,
-            "address_line1": null,
-            "address_line2": null,
-            "address_city": null,
-            "address_state": null,
-            "address_zip": null,
-            "address_country": null,
-            "cvc_check": "pass",
-            "address_line1_check": null,
-            "address_zip_check": null
-          },
-          "captured": true,
-          "refunds": [],
-          "balance_transaction": "txn_103hLm2ZsJylVlgJoRblVtvN",
-          "failure_message": null,
-          "failure_code": null,
-          "amount_refunded": 0,
-          "customer": null,
-          "invoice": null,
-          "description": "test",
-          "dispute": null,
-          "metadata": {},
-          "statement_description": null
+          "error": {
+            "message": "Your card was declined.",
+            "type": "card_error",
+            "code": "card_declined"
+          }
         }
     http_version: 
-  recorded_at: Thu, 20 Mar 2014 03:43:01 GMT
+  recorded_at: Fri, 28 Mar 2014 04:27:20 GMT
 recorded_with: VCR 2.8.0
