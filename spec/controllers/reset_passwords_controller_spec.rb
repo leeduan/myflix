@@ -40,7 +40,7 @@ describe ResetPasswordsController do
       let(:new_password) { 'r3Pa66w0rD' }
       let!(:user) { Fabricate(:user, password_token: token) }
 
-      before { patch :update, id: token, password: new_password }
+      before { patch :update, id: token, password: new_password, password_confirmation: new_password }
 
       it 'updates user password' do
         expect(user.reload.authenticate(new_password)).to be_instance_of(User)

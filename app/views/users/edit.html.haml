@@ -3,27 +3,15 @@
 %section.account.container
   .row
     .col-md-10.col-lg-offset-1
-      = form_for @user, html: { class: 'form-horizontal', 'data-js' => 'true' } do |f|
+      = bootstrap_form_for @user, layout: :horizontal, label_col: 'col-sm-3', control_col: "col-sm-6", html: { 'data-js' => true } do |f|
         %header
           %h1 Your Account
         %fieldset
-          .form-group
-            = f.label :email, 'Email Address', class: 'control-label col-sm-3'
-            .col-sm-6
-              = f.email_field :email, class: 'form-control'
-          .form-group
-            = f.label :password, class: 'control-label col-sm-3'
-            .col-sm-6
-              = f.password_field :password, class: 'form-control'
-          .form-group
-            = f.label :password_confirmation, 'Confirm Password', class: 'control-label col-sm-3'
-            .col-sm-6
-              = f.password_field :password_confirmation, class: 'form-control'
-          .form-group
-            = f.label :full_name, 'Full Name', class: 'control-label col-sm-3'
-            .col-sm-6
-              = f.text_field :full_name, class: 'form-control'
-        %fieldset.actions.form-group
+          = f.email_field :email, label: 'Email Address'
+          = f.password_field :password
+          = f.password_field :password_confirmation, label: 'Password Confirmation'
+          = f.text_field :full_name, label: 'Full Name'
+        %fieldset.form-group.action
           .col-sm-8.col-sm-offset-3
             = f.submit 'Update', class: 'btn btn-default'
-            = link_to "Cancel", home_path
+            = link_to 'Cancel', home_path

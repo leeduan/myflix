@@ -1,16 +1,17 @@
 class User < ActiveRecord::Base
   has_many :reviews, -> { order('created_at DESC') }
   has_many :queue_items, -> { order('list_order') }
-  has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
-  has_many :leading_relationships, class_name: "Relationship", foreign_key: :leader_id
+  has_many :following_relationships, class_name: 'Relationship', foreign_key: :follower_id
+  has_many :leading_relationships, class_name: 'Relationship', foreign_key: :leader_id
   has_many :sent_invitations, class_name: 'Invitation', foreign_key: :sender_id
   has_many :payments
   belongs_to :invitation
 
-  validates_presence_of :full_name
-  validates_confirmation_of :password
   validates :email, presence: true, uniqueness: { case_sensitive: true }
   validates :password, presence: true, on: :create
+  validates :password, presence: true, confirmation: true, on: :update
+  validates :password_confirmation, presence: true, on: :update
+  validates_presence_of :full_name
   has_secure_password validations: false
 
   def follow(leader)
@@ -40,7 +41,6 @@ class User < ActiveRecord::Base
   end
 
   def generate_password_token
-    self.password_token = SecureRandom.urlsafe_base64
-    self.save
+    self.update_column(:password_token, SecureRandom.urlsafe_base64)
   end
 end

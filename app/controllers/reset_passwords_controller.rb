@@ -14,13 +14,19 @@ class ResetPasswordsController < ApplicationController
 
   def update
     user = User.find_by(password_token: params[:id])
-    if user
-      user.update_attributes(password: params[:password], password_token: nil)
-      user.save
+    redirect_to expired_token_path and return unless user
+    user.update_attributes(
+      password: params[:password],
+      password_confirmation: params[:password_confirmation],
+      password_token: nil
+    )
+    if user.save
       flash[:info] = 'Your password has been changed. Please sign in.'
       redirect_to signin_path
     else
-      redirect_to expired_token_path
+      flash[:danger] = 'Passwords do not match. Please try again.'
+      @token = user.password_token
+      render :show
     end
   end
 end

@@ -133,14 +133,31 @@ describe UsersController do
       let(:action) { get :edit, id: 1 }
     end
 
-    it 'sets @user' do
-      get :edit, id: current_user.id
-      expect(assigns(:user)).to eq(current_user)
+    context 'current user is authorized' do
+      before { get :edit, id: current_user.id }
+
+      it 'sets @user' do
+        expect(assigns(:user)).to eq(current_user)
+      end
+
+      it 'renders the edit template' do
+        expect(response).to render_template :edit
+      end
     end
 
-    it 'renders the edit template' do
-      get :edit, id: current_user.id
-      expect(response).to render_template :edit
+    context 'current user is not authorized' do
+      before do
+        other_user = Fabricate(:user)
+        get :edit, id: other_user.id
+      end
+
+      it 'does not set @user' do
+        expect(assigns(:user)).to eq(nil)
+      end
+
+      it 'redirects to home path' do
+        expect(response).to redirect_to home_path
+      end
     end
   end
 
@@ -152,9 +169,23 @@ describe UsersController do
     end
 
     context 'valid input' do
-      before { post :update, id: current_user.id, user: Fabricate.attributes_for(:user, password: 'password', password_confirmation: 'password') }
+      let(:user_attributes) { Fabricate.attributes_for(:user, password: 'password', password_confirmation: 'password') }
+      before { post :update, id: current_user.id, user: user_attributes }
+
       it 'displays a sign-in message' do
         expect(flash[:info]).to be_present
+      end
+
+      it 'updates the user password' do
+        expect(User.first.authenticate('password')).to be_instance_of(User)
+      end
+
+      it 'updates the user full name' do
+        expect(User.first.full_name).to eq(user_attributes[:full_name])
+      end
+
+      it 'updates the user email' do
+        expect(User.first.email).to eq(user_attributes[:email])
       end
 
       it 'redirects the user to home path' do
@@ -163,7 +194,16 @@ describe UsersController do
     end
 
     context 'invalid input' do
+      let(:user_attributes) { Fabricate.attributes_for(:user, password: 'password', password_confirmation: '') }
+      before { post :update, id: current_user.id, user: user_attributes }
 
+      it 'assigns @user to current_user' do
+        expect(assigns(:user)).to eq(current_user)
+      end
+
+      it 'renders the edit template' do
+        expect(response).to render_template :edit
+      end
     end
   end
 end
