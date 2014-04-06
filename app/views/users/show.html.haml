@@ -1,6 +1,6 @@
 %section.user.container
   .row
-    .col-sm-10.col-sm-offset-1
+    .col-sm-12.col-md-10.col-md-offset-1
       %article
         %header
           = image_tag avatar_url(@user, 40)
@@ -22,7 +22,7 @@
 
 %section.user_reviews.container
   .row
-    .col-sm-10.col-sm-offset-1
+    .col-sm-12.col-md-10.col-md-offset-1
       %header
         %h3 #{@user.full_name}'s Reviews (#{@user.reviews.count})
       %ul

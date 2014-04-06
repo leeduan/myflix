@@ -7,7 +7,7 @@
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
-      = bootstrap_form_for @user, layout: :horizontal, label_col: 'col-sm-2', right: 'control_col', html: { 'data-stripe-form' => true } do |f|
+      = bootstrap_form_for @user, layout: :horizontal, label_col: 'col-sm-4 col-md-3', control_col: "col-sm-8 col-md-8", html: { 'data-stripe-form' => true } do |f|
         %header
           %h1 Register
         %fieldset
@@ -17,15 +17,15 @@
           = f.hidden_field :invitation_id, value: @user.invitation_id
         %fieldset.credit_card
           .form-group
-            %label.control-label.col-sm-2(for='card-number') Credit Card Number
-            .col-sm-6
+            %label.control-label.col-sm-4.col-md-3(for='card-number') Credit Card Number
+            .col-sm-8.col-md-8
               %input.form-control#card-number(data-stripe='card-number' type='text' maxlength='16')
           .form-group
-            %label.control-label.col-sm-2(for='card-cvc') Security Code
-            .col-sm-6
+            %label.control-label.col-sm-4.col-md-3(for='card-cvc') Security Code
+            .col-sm-8.col-md-8
               %input.form-control#card-cvc(data-stripe='card-cvc' type='text' maxlength='4')
           .form-group
-            %label.control-label.col-sm-2 Expiration
+            %label.control-label.col-sm-4.col-md-3 Expiration
             .col-sm-3
               = select_month(Date.today, {add_month_numbers: true},  class: 'form-control', data: {stripe: 'card-expire-month'})
             .col-sm-2

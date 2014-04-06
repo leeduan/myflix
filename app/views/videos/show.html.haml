@@ -1,23 +1,22 @@
 = render 'shared/form_validation'
 
 %article.video
-  .container
-    .row
-      .video_large_cover.col-sm-7.col-sm-offset-1
-        %img(src="#{@video.large_cover.thumb}")
-      .video_info.col-sm-3
-        %header
-          %h3= @video.title
-          %span Rating:
-          = @video.average_rating_text
-        %p= @video.description
-        .actions
-          = link_to 'Watch Now', @video.url, class: 'btn btn-primary', 'target' => '_blank'
-          - unless @video.exists_in_queue?(current_user)
-            = link_to '+ My Queue', queue_items_path(video_id: @video.id), method: :post, class: 'btn btn-default'
-%section.reviews.container
   .row
-    .col-sm-10.col-sm-offset-1
+    .video-large-cover.col-sm-12.col-md-7.col-md-offset-1
+      %img(src="#{@video.large_cover.thumb}")
+    .video-info.col-sm-12.col-md-3
+      %header
+        %h3= @video.title
+        %span Rating:
+        = @video.average_rating_text
+      %p= @video.description
+      .actions
+        = link_to 'Watch Now', @video.url, class: 'btn btn-primary', 'target' => '_blank'
+        - unless @video.exists_in_queue?(current_user)
+          = link_to '+ My Queue', queue_items_path(video_id: @video.id), method: :post, class: 'btn btn-default'
+%section.reviews
+  .row
+    .col-sm-12.col-md-10.col-md-offset-1
       = form_for [@video, @review], html: { 'data-js' => 'true' } do |f|
         %fieldset
           .form-group
@@ -39,10 +38,10 @@
         - @reviews.each do |review|
           %article.review
             %li.row
-              .col-sm-2
+              .col-sm-3.col-md-2
                 %span Rating: #{review.rating} / 5
                 %p
                   by
                   = link_to review.user.full_name, review.user
-              .col-sm-8
+              .col-sm-9.col-md-10
                 %p= review.description

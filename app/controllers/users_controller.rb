@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show]
-  before_action :redirect_current_user_home, except: [:show]
+  before_action :require_user, only: [:show, :edit, :update]
+  before_action :redirect_current_user_home, except: [:show, :edit, :update]
 
   def new
     @user = User.new
@@ -33,9 +33,28 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def edit
+    if params[:id] == current_user.to_param
+      @user = current_user
+    else
+      redirect_to home_path
+    end
+  end
+
+  def update
+    user = current_user
+    if user.update(user_params)
+      flash[:info] = 'Success! Your account has been updated.'
+      redirect_to home_path
+    else
+      @user = user.reload
+      render :edit
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :full_name, :invitation_id)
+    params.require(:user).permit(:email, :password, :full_name, :invitation_id, :password_confirmation)
   end
 end

@@ -23,7 +23,7 @@ Myflix::Application.routes.draw do
     post :search, on: :collection
     resources :reviews, only: [:create]
   end
-  resources :users, only: [:create, :show]
+  resources :users, only: [:create, :show, :edit, :update]
   resources :categories, only: [:show]
   resources :queue_items, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]

@@ -1,9 +1,9 @@
 %section.admin_payments
   .container
     .row
-      .col-sm-10.col-sm-offset-1
+      .col-sm-10.col-md-8.col-sm-offset-1.col-md-offset-2
         %section.payment_history
-          %ul.nav.nav-tabs
+          %ul.nav.nav-tabs.hidden-xs
             %li.active
               %a Recent Payments
             %li
@@ -11,10 +11,10 @@
           %table.table
             %thead
               %tr
-                %th Name
+                %th.hidden-xs Name
                 %th Email
                 %th Amount
-                %th Reference ID
+                %th.hidden-xs Reference ID
             %tbody
               - @payments.each do |payment|
                 %tr

@@ -10,7 +10,7 @@ feature 'user signs in' do
   scenario 'with suspended user' do
     user = Fabricate(:user, suspended: true)
     sign_in(user)
-    expect(page).to have_content('Unlimited Movies for Only 9.99')
+    expect(page).to have_content('Unlimited Movies for Only $9.99')
     expect(page).to have_content('Sorry, your account has been suspended.')
   end
 

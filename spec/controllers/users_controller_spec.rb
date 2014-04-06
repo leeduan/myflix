@@ -60,7 +60,7 @@ describe UsersController do
 
   describe 'POST create' do
     it_behaves_like 'redirect home current user' do
-      let(:action) { get :new }
+      let(:action) { post :create, user: Fabricate.attributes_for(:user) }
     end
 
     context 'successful user registration' do
@@ -123,6 +123,87 @@ describe UsersController do
     it 'renders the show template' do
       get :show, id: 1
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'GET edit' do
+    before { set_current_user }
+
+    it_behaves_like 'require signin' do
+      let(:action) { get :edit, id: 1 }
+    end
+
+    context 'current user is authorized' do
+      before { get :edit, id: current_user.id }
+
+      it 'sets @user' do
+        expect(assigns(:user)).to eq(current_user)
+      end
+
+      it 'renders the edit template' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'current user is not authorized' do
+      before do
+        other_user = Fabricate(:user)
+        get :edit, id: other_user.id
+      end
+
+      it 'does not set @user' do
+        expect(assigns(:user)).to eq(nil)
+      end
+
+      it 'redirects to home path' do
+        expect(response).to redirect_to home_path
+      end
+    end
+  end
+
+  describe 'PATCH update' do
+    before { set_current_user }
+
+    it_behaves_like 'require signin' do
+      let(:action) { post :update, id: 1, user: Fabricate.attributes_for(:user) }
+    end
+
+    context 'valid input' do
+      let(:user_attributes) { Fabricate.attributes_for(:user, password: 'password', password_confirmation: 'password') }
+      before { post :update, id: current_user.id, user: user_attributes }
+
+      it 'displays a sign-in message' do
+        expect(flash[:info]).to be_present
+      end
+
+      it 'updates the user password' do
+        expect(User.first.authenticate('password')).to be_instance_of(User)
+      end
+
+      it 'updates the user full name' do
+        expect(User.first.full_name).to eq(user_attributes[:full_name])
+      end
+
+      it 'updates the user email' do
+        expect(User.first.email).to eq(user_attributes[:email])
+      end
+
+      it 'redirects the user to home path' do
+        expect(response).to redirect_to home_path
+      end
+    end
+
+    context 'invalid input' do
+      let(:user_attributes) { Fabricate.attributes_for(:user, password: 'password', password_confirmation: '') }
+      before { post :update, id: current_user.id, user: user_attributes }
+
+      it 'assigns @user to current_user' do
+        expect(assigns(:user)).to eq(current_user)
+      end
+
+      it 'renders the edit template' do
+        expect(response).to render_template :edit
+      end
     end
   end
 end

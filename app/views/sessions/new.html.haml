@@ -2,7 +2,7 @@
 
 %section.sign_in.container
   .row
-    .col-sm-10.col-sm-offset-1
+    .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
       = form_tag signin_path, 'data-js' => 'true' do
         %header
           %h1 Sign in
@@ -10,13 +10,13 @@
           .form-group
             = label_tag :email, 'Email Address'
             .row
-              .col-sm-6
+              .col-sm-12
                 = email_field_tag :email, nil, class: 'form-control'
           .form-group
             = label_tag :password
             .row
-              .col-sm-6
+              .col-sm-12
                 = text_field_tag :password, nil, class: 'form-control', type: 'password'
         %fieldset.form-group.action
           = submit_tag 'Sign In', class: 'btn btn-default'
-          = link_to 'Forgot Password?', forgot_password_path
+          = link_to 'Forgot Password?', forgot_password_path, class: 'forgot-password'

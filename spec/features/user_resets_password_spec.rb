@@ -14,6 +14,7 @@ feature 'user resets password' do
     current_email.click_link 'reset'
 
     fill_in 'password', with: 'new_password'
+    fill_in 'password_confirmation', with: 'new_password'
     click_button 'Reset Password'
 
     fill_in 'email', with: user.email
