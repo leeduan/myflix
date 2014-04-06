@@ -3,13 +3,13 @@
 %section.admin_add_video
   .container
     .row
-      .col-md-10.col-md-offset-1
-        %ul.nav.nav-tabs
+      .col-sm-10.col-md-8.col-sm-offset-1.col-md-offset-2
+        %ul.nav.nav-tabs.hidden-xs
           %li
             = link_to 'Recent Payments', admin_payments_path
           %li.active
             %a Add a New Video
-        %br
+        %br.hidden-xs
         = form_for [:admin, @video], html: { class: 'form-horizontal', 'data-js' => 'true' } do |f|
           %fieldset
             .form-group
@@ -45,5 +45,5 @@
                 .col-sm-6
                   = f.url_field :url, class: 'form-control'
           %fieldset.form-group.actions
-            .col-sm-6.col-md-offset-3
+            .col-sm-6.col-sm-offset-3
               = f.submit 'Add Video', class: 'btn btn-default'

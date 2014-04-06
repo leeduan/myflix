@@ -1,9 +1,9 @@
 article.video
+  margin-bottom: 30px
   background-color: #F7F7F7
-  padding: 30px
-  margin: 0 0 30px
-  .video_info
-    margin-left: 30px
+  > .row
+    padding: 30px
+  .video-info
     header
       padding-bottom: 8px
       margin-bottom: 12px
@@ -18,7 +18,10 @@ article.video
       margin-bottom: 20px
     .actions
       a
-        margin-right: 20px
+        vertical-align: baseline
+        margin: 0 20px 20px 0
+        &:last-of-type
+          margin-bottom: 0
 
 section.reviews
   form
@@ -34,3 +37,32 @@ section.reviews
           font-size: 14px
         &:last-of-type
           border-bottom: none
+.video-item
+  &:nth-of-type(n+7)
+    margin-top: 30px
+  a
+    display: block
+    text-align: center
+  img
+    max-width: 100%
+@media screen and (min-width: 768px) and (max-width: 992px)
+  .video-item
+    &:nth-of-type(n+5)
+      margin-top: 30px
+@media screen and (max-width: 767px)
+  .video-item
+    &:nth-of-type(n+1)
+      margin-top: 20px
+@media screen and (max-width: 400px)
+  .video-item
+    width: 100%
+.video-large-cover
+  img
+    max-width: 100%
+  @media screen and (min-width: 768px) and (max-width: 991px)
+    img
+      display: block
+      width: 75%
+      margin: 0 auto 30px
+  @media screen and (max-width: 767px)
+    margin-bottom: 20px

@@ -1,19 +1,26 @@
 section.user
   margin: 30px auto
-
   article
     background-color: #F7F7F7
     padding: 20px
     header
-      height: 50px
+      margin-bottom: 10px
       img
-        float: left
         margin-right: 16px
+        vertical-align: middle
+        width: 40px
+        height: 40px
+        @media screen and (max-width: 767px)
+          display: block
+          margin: 0 auto
       h2
         font-size: 16px
         font-weight: normal
-        display: inline-block
-        margin-top: 12px
+        display: inline
+        @media screen and (max-width: 767px)
+          display: block
+          margin: 20px auto 10px
+          text-align: center
       button, a
         float: right
     table
@@ -24,7 +31,6 @@ section.user
               width: 30%
             &:last-of-type
               width: 15%
-
 section.user_reviews
   header
     h3

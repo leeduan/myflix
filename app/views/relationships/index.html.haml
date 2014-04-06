@@ -5,14 +5,14 @@
     %thead
       %tr
         %th
-        %th Videos in Queue
-        %th Followers
+        %th.hidden-xs Videos in Queue
+        %th.hidden-xs Followers
         %th Unfollow
     %tbody
       - @relationships.each do |relationship|
         %tr
           %td
-            = image_tag avatar_url(relationship.leader, 40)
+            = image_tag avatar_url(relationship.leader, 40), class: 'hidden-xs'
             = link_to relationship.leader.full_name, relationship.leader
           %td.extra-padding= relationship.leader.queue_count
           %td.extra-padding= relationship.leader.followers_count
