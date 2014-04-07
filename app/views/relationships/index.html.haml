@@ -1,21 +1,23 @@
 %section.people
-  %header
-    %h2 People I Follow
-  %table.table
-    %thead
-      %tr
-        %th
-        %th.hidden-xs Videos in Queue
-        %th.hidden-xs Followers
-        %th Unfollow
-    %tbody
-      - @relationships.each do |relationship|
-        %tr
-          %td
-            = image_tag avatar_url(relationship.leader, 40), class: 'hidden-xs'
-            = link_to relationship.leader.full_name, relationship.leader
-          %td.extra-padding= relationship.leader.queue_count
-          %td.extra-padding= relationship.leader.followers_count
-          %td.extra-padding
-            = link_to relationship, method: :delete do
-              %i.glyphicon.glyphicon-remove
+  .row
+    %header.col-sm-10.col-md-8.col-sm-offset-1.col-md-offset-2
+      %h2 People I Follow
+    .col-sm-10.col-md-8.col-sm-offset-1.col-md-offset-2
+      %table.table
+        %thead
+          %tr
+            %th
+            %th.hidden-xs Videos in Queue
+            %th.hidden-xs Followers
+            %th Unfollow
+        %tbody
+          - @relationships.each do |relationship|
+            %tr
+              %td
+                = image_tag avatar_url(relationship.leader, 40), class: 'hidden-xs'
+                = link_to relationship.leader.full_name, relationship.leader
+              %td.extra-padding= relationship.leader.queue_count
+              %td.extra-padding= relationship.leader.followers_count
+              %td.extra-padding
+                = link_to relationship, method: :delete do
+                  %i.glyphicon.glyphicon-remove
