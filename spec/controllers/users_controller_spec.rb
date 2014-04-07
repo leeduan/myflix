@@ -133,6 +133,10 @@ describe UsersController do
       let(:action) { get :edit, id: 1 }
     end
 
+    it_behaves_like 'require authorized user' do
+      let(:action) { get :edit, id: 2 }
+    end
+
     context 'current user is authorized' do
       before { get :edit, id: current_user.id }
 
@@ -144,21 +148,6 @@ describe UsersController do
         expect(response).to render_template :edit
       end
     end
-
-    context 'current user is not authorized' do
-      before do
-        other_user = Fabricate(:user)
-        get :edit, id: other_user.id
-      end
-
-      it 'does not set @user' do
-        expect(assigns(:user)).to eq(nil)
-      end
-
-      it 'redirects to home path' do
-        expect(response).to redirect_to home_path
-      end
-    end
   end
 
   describe 'PATCH update' do
@@ -166,6 +155,10 @@ describe UsersController do
 
     it_behaves_like 'require signin' do
       let(:action) { post :update, id: 1, user: Fabricate.attributes_for(:user) }
+    end
+
+    it_behaves_like 'require authorized user' do
+      let(:action) { get :update, id: 2, user: Fabricate.attributes_for(:user) }
     end
 
     context 'valid input' do

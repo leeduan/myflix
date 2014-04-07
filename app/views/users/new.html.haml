@@ -30,5 +30,5 @@
               = select_month(Date.today, {add_month_numbers: true},  class: 'form-control', data: {stripe: 'card-expire-month'})
             .col-sm-2
               = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'form-control', data: {stripe: 'card-expire-year'})
-        %fieldset(class='actions control-group col-sm-offset-2')
+        %fieldset.actions.control-group.col-sm-offset-4.col-md-offset-3
           = f.submit 'Sign Up'

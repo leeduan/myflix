@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show, :edit, :update]
-  before_action :redirect_current_user_home, except: [:show, :edit, :update]
+  before_action :require_user, only: [:show, :edit, :update, :plan_and_billing]
+  before_action :redirect_current_user_home, except: [:show, :edit, :update, :plan_and_billing]
+  before_action :handle_unauthorized_editing, only: [:edit, :update, :plan_and_billing]
 
   def new
     @user = User.new
@@ -34,11 +35,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if params[:id] == current_user.to_param
-      @user = current_user
-    else
-      redirect_to home_path
-    end
+    @user = current_user
   end
 
   def update
@@ -56,5 +53,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :full_name, :invitation_id, :password_confirmation)
+  end
+
+  def handle_unauthorized_editing
+    redirect_to home_path and return unless current_user.to_param == params[:id]
   end
 end

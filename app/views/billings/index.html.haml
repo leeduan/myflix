@@ -1,0 +1,41 @@
+%section.billing.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      .plan_and_payments
+        %section.plan
+          %header
+            %h1 Billing
+        - if @subscription
+          %table.table
+            %thead
+              %tr
+                %th Plan
+                %th.hidden-xs Next Billing Date
+                %th Price
+            %tbody
+              %tr
+                %td
+                  = @subscription[:name]
+                %td.hidden-xs
+                  = time_to_date(@subscription[:next_billind_date])
+                %td $#{@subscription[:amount].to_f / 100} per month
+          = link_to 'Cancel Service', billing_path, method: :post, class: 'btn btn-default', data: { confirm: 'Are you sure?' }
+        - else
+          %p No subscription found.
+        - if @payments
+          %section.payment_history
+            %header
+              %h1 Payment History
+            %table.table
+              %thead
+                %tr
+                  %th Date
+                  %th.hidden-xs Service Duration
+                  %th Total
+              %tbody
+                - @payments.each do |payment|
+                  %tr
+                    %td
+                      = time_to_date(payment.created_at)
+                    %td.hidden-xs #{time_to_date(payment.created_at)} - #{month_from_date(payment.created_at)}
+                    %td $#{payment.amount.to_f / 100}
