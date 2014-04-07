@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show, :edit, :update, :plan_and_billing]
-  before_action :redirect_current_user_home, except: [:show, :edit, :update, :plan_and_billing]
-  before_action :handle_unauthorized_editing, only: [:edit, :update, :plan_and_billing]
+  before_action :require_user, only: [:show, :edit, :update]
+  before_action :redirect_current_user_home, except: [:show, :edit, :update]
+  before_action :handle_unauthorized_editing, only: [:edit, :update]
 
   def new
     @user = User.new
