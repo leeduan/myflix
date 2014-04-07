@@ -1,16 +1,13 @@
-form[data-js="true"]
-  .form-group
-    .col-sm-10, .col-sm-6
-      > input, > span.help-block
-        display: inline-block
-        -webkit-box-sizing: border-box
-        -moz-box-sizing: border-box
-        box-sizing: border-box
-      > span.help-block
-        padding-left: 1em
-        margin-bottom: 0
-        width: 40%
 form
   header
     h1 + p
       margin-top: 0.5em
+  .form-group
+    input[type=submit] + a
+      padding-left: 15px
+#new_user
+  input[type=submit]
+    @media screen and (min-width: 768px) and (max-width: 991px)
+      margin-left: 10px
+    @media screen and (min-width: 992px)
+      margin-left: 8px

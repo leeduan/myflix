@@ -51,4 +51,43 @@ describe StripeWrapper::Customer do
       end
     end
   end
+
+  describe '.retrieve' do
+    let(:customer) { StripeWrapper::Customer.retrieve('cus_3ngLzXztv1omPi') }
+    let(:invalid_customer) { StripeWrapper::Customer.retrieve('invalid-user') }
+
+    context 'with valid id', :vcr do
+      it 'creates a customer' do
+        expect(customer).to be_successful
+      end
+    end
+
+    context 'with invalid id', :vcr do
+      it 'does not create a customer' do
+        expect(invalid_customer).to_not be_successful
+      end
+
+      it 'has an error message' do
+        expect(invalid_customer.error_message).to be_present
+      end
+    end
+  end
+
+  describe '#subscription', :vcr do
+    let(:customer) { StripeWrapper::Customer.retrieve('cus_3ngLzXztv1omPi') }
+
+    it 'has a subscription' do
+      expect(customer.subscription[:name]).to eq('Monthly Premium')
+      expect(customer.subscription[:amount]).to eq(999)
+      expect(customer.subscription[:next_billind_date]).to be_instance_of(DateTime)
+    end
+  end
+
+  describe '#cancel_subscription', :vcr do
+    let(:customer) { StripeWrapper::Customer.retrieve('cus_3o0HkagC8EB6f5') }
+
+    it 'deletes the subscription' do
+      expect(customer.cancel_subscription).to be_present
+    end
+  end
 end

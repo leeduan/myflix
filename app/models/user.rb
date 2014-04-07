@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
     !(follows?(leader) || self == leader)
   end
 
+  def can_edit?(user)
+    self == user
+  end
+
   def followers_count
     leading_relationships.count
   end

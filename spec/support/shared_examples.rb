@@ -27,3 +27,11 @@ shared_examples 'generates token' do
     expect(object.token).to be_present
   end
 end
+
+shared_examples 'require authorized user' do
+  it 'redirects to the home page' do
+    Fabricate(:user)
+    action
+    expect(response).to redirect_to home_path
+  end
+end

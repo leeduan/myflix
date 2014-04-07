@@ -18,6 +18,8 @@ Myflix::Application.routes.draw do
   get '/forgot_password', to: 'forgot_passwords#new'
   get '/confirm_password_reset', to: 'forgot_passwords#confirm'
   get '/invite', to: 'invitations#new'
+  get '/billing', to: 'billings#index'
+  post '/billing', to: 'billings#cancel'
 
   resources :videos, only: [:show] do
     post :search, on: :collection
