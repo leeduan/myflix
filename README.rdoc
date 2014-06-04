@@ -10,7 +10,7 @@ This web application is a Netflix-like clone built with Ruby on Rails. Based on 
    * Install <tt>Qt</tt>.
    * Install <tt>bundler</tt> by typing <tt>gem install bundler</tt>.
    * Run <tt>bundle</tt> to install gem dependencies.
-   * Run <tt>rake db:migrate db:test:prepare</tt> and <tt>rake db:seed</tt> to set up development database.
+   * Run <tt>rake db:setup</tt> to set up database.
 3. Run the server:
    * Run <tt>rails s</tt> to start application at localhost:3000
    * Run <tt>foreman start</tt> to start application at localhost:5000 with Heroku Toolbelt installed
